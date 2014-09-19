@@ -1,9 +1,7 @@
 <?xml version="1.0"?>
 <resources>
-	<objects path="../res/obj/">
+	<object path="../res/obj/">
 		<obj name="sphere" file="sphere.obj"/>
-	</objects>
-	<textures path="../res/textures/">
 		<texture name="rock" file="texture1.jpg"/>
-	</textures>
+	</object>
 </resources>

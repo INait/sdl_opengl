@@ -11,7 +11,7 @@ ResourceLoader::~ResourceLoader()
 {
 }
 
-void ResourceLoader::LoadXMLResources( const std::string & res_location )
+void ResourceLoader::LoadXMLResources( const std::string & res_location, std::vector< AssetPtr > & assets )
 {
 	TiXmlDocument doc( res_location.c_str() );
 	if (!doc.LoadFile())
@@ -28,39 +28,25 @@ void ResourceLoader::LoadXMLResources( const std::string & res_location )
 	}
 
 	// check if set param exists
-	TiXmlElement* pObjElem = pResElem->FirstChildElement("objects");
+	TiXmlElement* pObjElem = pResElem->FirstChildElement("object");
 	std::string resPrefix = (pObjElem && pObjElem->Attribute("path")) ? pObjElem->Attribute("path") : "";
 
 	if (pObjElem)
 	{
 		try {
-			for (TiXmlElement* pObjectElem = pObjElem->FirstChildElement("obj"); pObjectElem; pObjectElem = pObjectElem->NextSiblingElement("obj"))
+			for (TiXmlElement* pObjectElem = pObjElem->FirstChildElement("obj"), * pTextureElem = pObjElem->FirstChildElement( "texture" );
+				 pObjectElem && pTextureElem;
+				 pObjectElem = pObjectElem->NextSiblingElement("obj"),
+				 pTextureElem = pTextureElem->NextSiblingElement("texture"))
 			{
-				std::string name = pObjectElem->Attribute("name");
-				std::string file = resPrefix + pObjectElem->Attribute("file");
+				std::string obj_name = pObjectElem->Attribute("name");
+				std::string obj_file = resPrefix + pObjectElem->Attribute("file");
 
-				// load asset here
-			}
-		}
-		catch (const std::runtime_error &e)
-		{
-			std::cout << e.what() << std::endl;
-			return;
-		}
-	}
+				std::string tex_name = pTextureElem->Attribute("name");
+				std::string tex_file = resPrefix + pTextureElem->Attribute("file");
 
-	TiXmlElement* pTexturesElem = pResElem->FirstChildElement( "textures" );
-	std::string texPrefix = ( pTexturesElem && pTexturesElem->Attribute( "path") ) ? pTexturesElem->Attribute( "path" ) : "";
-
-	if (pTexturesElem)
-	{
-		try {
-			for (TiXmlElement* pTextureElem = pTexturesElem->FirstChildElement("obj"); pTextureElem; pTextureElem = pTextureElem->NextSiblingElement("obj"))
-			{
-				std::string name = pTextureElem->Attribute("name");
-				std::string file = texPrefix + pTextureElem->Attribute("file");
-
-				// load texture here
+				auto asset = std::make_shared< Asset >( obj_file.c_str(), tex_file.c_str() );
+				assets.push_back( asset );
 			}
 		}
 		catch (const std::runtime_error &e)

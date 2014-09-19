@@ -3,6 +3,7 @@
 
 #include "../3rd/tinyxml/tinyxml.h"
 #include "../3rd/wavefront_loader/wavefront_loader.hpp"
+#include "../include/asset.hpp"
 
 #include <vector>
 #include <string>
@@ -13,10 +14,7 @@ public:
 	ResourceLoader();
 	~ResourceLoader();
 
-	void LoadXMLResources( const std::string & res_location );
-
-private:
-
+	void LoadXMLResources( const std::string & res_location, std::vector< AssetPtr > & assets );
 };
 
 #endif // _RESOURCE_LOADER_HPP_
