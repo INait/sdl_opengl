@@ -3,9 +3,17 @@
 
 #define GL_GLEXT_PROTOTYPES
 
-#include <SOIL/SOIL.h>
+#ifdef _WIN32
+	#include <Windows.h>
+	#include <SOIL.h>
+	#include <SDL.h>
 
-#include <SDL2/SDL.h>
+	#undef main
+#else
+	#include <SOIL/SOIL.h>
+	#include <SDL2/SDL.h>
+#endif
+
 #include <GL/gl.h> // Библиотека OpenGL
 #include <GL/glu.h> // Библиотека GLU
 #include <GL/glext.h>

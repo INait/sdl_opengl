@@ -13,6 +13,9 @@
     <Filter Include="include">
       <UniqueIdentifier>{ce3bafa9-d21e-4362-80b1-484daceb0a89}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3rd\tinyxml">
+      <UniqueIdentifier>{4ca9da16-12ce-4de7-aa29-a361ed817f1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rd\wavefront_loader\wavefront_loader.cpp">
@@ -21,10 +24,49 @@
     <ClCompile Include="..\src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\asset.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\resource_loader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rd\tinyxml\tinystr.cpp">
+      <Filter>3rd\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rd\tinyxml\tinyxml.cpp">
+      <Filter>3rd\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rd\tinyxml\tinyxmlerror.cpp">
+      <Filter>3rd\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rd\tinyxml\tinyxmlparser.cpp">
+      <Filter>3rd\tinyxml</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rd\wavefront_loader\wavefront_loader.hpp">
       <Filter>3rd\wavefront_loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\asset.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\defines.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\resource_loader.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\window.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\tinyxml\tinystr.h">
+      <Filter>3rd\tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\tinyxml\tinyxml.h">
+      <Filter>3rd\tinyxml</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

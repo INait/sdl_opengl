@@ -70,11 +70,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\3rd\tinyxml\tinystr.cpp" />
+    <ClCompile Include="..\3rd\tinyxml\tinyxml.cpp" />
+    <ClCompile Include="..\3rd\tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="..\3rd\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="..\3rd\wavefront_loader\wavefront_loader.cpp" />
+    <ClCompile Include="..\src\asset.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\resource_loader.cpp" />
+    <ClCompile Include="..\src\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\3rd\tinyxml\tinystr.h" />
+    <ClInclude Include="..\3rd\tinyxml\tinyxml.h" />
     <ClInclude Include="..\3rd\wavefront_loader\wavefront_loader.hpp" />
+    <ClInclude Include="..\include\asset.hpp" />
+    <ClInclude Include="..\include\defines.hpp" />
+    <ClInclude Include="..\include\resource_loader.hpp" />
+    <ClInclude Include="..\include\window.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

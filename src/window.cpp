@@ -71,8 +71,8 @@ void SdlWindow::Init( const std::string & res_location )
 	ResourceLoader res_loader;
 	res_loader.LoadXMLResources( res_location, assets );
 
-	for( auto & asset : assets )
-		asset->SetShaderProgramID( shaderProgramID );
+	for( std::vector< AssetPtr >::const_iterator asset_it = assets.begin(); asset_it != assets.end(); ++asset_it )
+		(*asset_it)->SetShaderProgramID( shaderProgramID );
 }
 
 void SdlWindow::GameLoop()
@@ -110,8 +110,9 @@ void SdlWindow::GameLoop()
 		yrf -= 0.5;
 		zrf -= 0.5;
 
-		for( auto & asset : assets )
-			asset->Draw(xrf, yrf, zrf);
+		for( std::vector< AssetPtr >::const_iterator asset_it = assets.begin(); asset_it != assets.end(); ++asset_it )
+			(*asset_it)->Draw(xrf, yrf, zrf);
+
 		// обновляем экран
 
 		glFlush();
