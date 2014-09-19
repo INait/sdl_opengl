@@ -105,8 +105,16 @@ void init()
 	glMatrixMode(GL_MODELVIEW); // переходим в трехмерный режим
 
 	// shaders
-	std::string vShaderSource = readShaderFile( "shaders/s.vsh" );
-	std::string fShaderSource = readShaderFile( "shaders/f.fsh" );
+	std::string vShaderSource = "in vec4 s_vPosition; \
+								 void main() \
+								 { \
+									 gl_Position = s_vPosition; \
+								 }";
+	std::string fShaderSource = "out vec4 s_vColor; \
+								 void main() \
+								 { \
+									 s_vColor = vec4( 1.0, 0.0, 0.0, 1.0 ); \
+								 }";
 	GLuint vShaderID = makeVertexShader( vShaderSource.c_str() );
 	GLuint fShaderID = makeFragmentShader( fShaderSource.c_str() );
 	shaderProgramID = makeShaderProgram( vShaderID, fShaderID );

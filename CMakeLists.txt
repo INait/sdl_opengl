@@ -31,6 +31,6 @@ FILE( REMOVE         ${CMAKE_BINARY_DIR}/build )
 FILE( MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/build )
 
 FILE(GLOB PROJ_SRC src/*.cpp)
-FILE(GLOB 3RD_SRC 3rd/wavefront_loader/*.cpp)
+FILE(GLOB 3RD_SRC 3rd/wavefront_loader/*.cpp 3rd/tinyxml/*.cpp )
 ADD_EXECUTABLE( build/sdl_opengl ${PROJ_SRC} ${3RD_SRC} )
 TARGET_LINK_LIBRARIES( build/sdl_opengl SDL2 GL GLU SOIL )
