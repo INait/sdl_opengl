@@ -68,7 +68,7 @@
     <ClInclude Include="..\include\sdl_engine.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="object.hpp">
+    <ClInclude Include="..\include\object.hpp">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

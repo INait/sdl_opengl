@@ -11,7 +11,7 @@ SdlEngine::~SdlEngine()
 {
 }
 
-void SdlEngine::Init( int width, int height, const std::string & res_location )
+int SdlEngine::Init( int width, int height, const std::string & res_location )
 {
 	// Инициализация SDL
 	width_ = width;
@@ -20,7 +20,7 @@ void SdlEngine::Init( int width, int height, const std::string & res_location )
 	if ( SDL_Init(SDL_INIT_VIDEO) < 0 )
 	{
 		std::cout << "Unable to init SDL, error: " << SDL_GetError() << std::endl;
-		return;
+		return -1;
 	}
 
 	// Включаем двойной буфер, настраиваем цвета
@@ -34,16 +34,15 @@ void SdlEngine::Init( int width, int height, const std::string & res_location )
 
 	window = SDL_CreateWindow("Sphere", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width_, height_, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
-	if(window == NULL) // если не получилось создать окно, то выходим
-		exit(1);
+	if (window == NULL) // если не получилось создать окно, то выходим
+		return -2;
 
 	SDL_GLContext glcontext = SDL_GL_CreateContext(window); // создаем контекст OpenGL
 
-	if(glcontext == NULL) // если не получилось создать окно, то выходим
-		exit(1);
+	if (glcontext == NULL) // если не получилось создать окно, то выходим
+		return -3;
 
 	// Инициализация OpenGL
-
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // устанавливаем фоновый цвет на черный
 	glClearDepth(1.0);
 	glDepthFunc(GL_LESS);
@@ -69,59 +68,82 @@ void SdlEngine::Init( int width, int height, const std::string & res_location )
 	GLuint fShaderID = makeFragmentShader( fShaderSource.c_str() );
 	shaderProgramID = makeShaderProgram( vShaderID, fShaderID );
 
-
 	ResourceLoader res_loader;
 	res_loader.LoadXMLResources( res_location, assets );
 
 	for( std::vector< AssetPtr >::const_iterator asset_it = assets.begin(); asset_it != assets.end(); ++asset_it )
 		(*asset_it)->SetShaderProgramID( shaderProgramID );
+
+	return 0;
 }
 
 void SdlEngine::GameLoop()
 {
 	bool running = true;
 
-	float xrf = 0, yrf = 0, zrf = 0; // углы поворота
+	Vec3 orient{ 0.0, 0.0, 0.0 };
+	Vec3 pos{ 0.0, 0.0, -6.0 };
 
 	while(running)
 	{
-		SDL_Event event; // события SDL
+		SDL_Event event;
 
-		while ( SDL_PollEvent(&event) ) // начинаем обработку событий
+		while ( SDL_PollEvent(&event) )
 		{
-			switch(event.type) // смотрим:
+			switch(event.type)
 			{
-				case SDL_QUIT: // если произошло событие закрытия окна, то завершаем работу программы
+				case SDL_QUIT:
 					running = false;
 					break;
 
-				case SDL_KEYDOWN: // если нажата клавиша
-					switch(event.key.keysym.sym) // смотрим какая
+				case SDL_KEYDOWN:
+					switch(event.key.keysym.sym)
 					{
-						case SDLK_ESCAPE: // клавиша ESC
-							running = false; // завершаем работу программы
+						case SDLK_ESCAPE:
+							running = false;
+							break;
+						case SDLK_w:
+							pos.z -= 0.1;
+							break;
+						case SDLK_s:
+							pos.z += 0.1;
+							break;
+						case SDLK_a:
+							pos.x -= 0.1;
+							break;
+						case SDLK_d:
+							pos.x += 0.1;
+							break;
+						case SDLK_UP:
+							orient.x += 0.5;
+							break;
+						case SDLK_DOWN:
+							orient.x -= 0.5;
+							break;
+						case SDLK_LEFT:
+							orient.y -= 0.5;
+							break;
+						case SDLK_RIGHT:
+							orient.y += 0.5;
 							break;
 					}
 					break;
 			}
 		}
 
-		// пока программа запущена изменяем углы поворота, тем самым вращая куб
-
-		xrf -= 0.5;
-		yrf -= 0.5;
-		zrf -= 0.5;
-
-		for( std::vector< AssetPtr >::const_iterator asset_it = assets.begin(); asset_it != assets.end(); ++asset_it )
-			(*asset_it)->Draw(xrf, yrf, zrf);
-
-		// обновляем экран
+		// Draw objects
+		for (auto & asset : assets)
+		{
+			asset->SetOrientation(orient);
+			asset->SetPosition(pos);
+			asset->Draw();
+		}
 
 		glFlush();
 		SDL_GL_SwapWindow(window);
 	}
 
-	SDL_Quit(); // завершаем работу SDL и выходим
+	SDL_Quit();
 }
 
 std::string SdlEngine::readShaderFile( const char* filename )

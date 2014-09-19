@@ -20,9 +20,9 @@ private:
 public:
 
 	Asset( const char * object_path, const char * texture_path );
-	~Asset();
+	virtual ~Asset();
 
-	void Draw(float xrf, float yrf, float zrf);
+	virtual void Draw();
 
 	void SetShaderProgramID( const GLuint shaderProgramID ) { this->shaderProgramID = shaderProgramID; }
 };

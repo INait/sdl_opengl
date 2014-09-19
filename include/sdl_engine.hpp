@@ -10,7 +10,7 @@ public:
 	SdlEngine();
 	~SdlEngine();
 
-	void Init( int width, int height, const std::string & res_location);
+	int Init( int width, int height, const std::string & res_location);
 
 	void GameLoop();
 

@@ -1,8 +1,7 @@
 #include "asset.hpp"
 #include "defines.hpp"
-#include "../3rd/wavefront_loader/wavefront_loader.hpp"
 
-Asset::Asset( const char * obj_path, const char * texture_path )
+Asset::Asset(const char * obj_path, const char * texture_path) : Object({ 0, 0, 0 }, { 0, 0, 0 })
 {
 	if( ! ObjWavefrontLoader( obj_path, vertices, uvs, normals ) )
 		std::cout << "cannot load asset" << std::endl;
@@ -46,20 +45,20 @@ Asset::~Asset()
 {
 }
 
-void Asset::Draw(float xrf, float yrf, float zrf)
+void Asset::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	glTranslatef( 0.0f, 0.0f, -6.0f );
-	glRotatef(xrf, 1.0f, 0.0f, 0.0f);
-	glRotatef(yrf, 0.0f, 1.0f, 0.0f);
-	glRotatef(zrf, 0.0f, 0.0f, 1.0f);
+	glTranslatef(position_.x, position_.y, position_.z);
+	glRotatef(orientation_.x, 1.0f, 0.0f, 0.0f);
+	glRotatef(orientation_.y, 0.0f, 1.0f, 0.0f);
+	glRotatef(orientation_.z, 0.0f, 0.0f, 1.0f);
 
-	GLuint positionID = glGetAttribLocation(shaderProgramID, "s_vPosition");
-	glVertexAttribPointer( positionID, 3, GL_FLOAT, GL_FALSE, 0, 0 );
+	GLuint colorID = glGetAttribLocation(shaderProgramID, "s_vColor");
+	glVertexAttribPointer( colorID, 3, GL_FLOAT, GL_FALSE, 0, 0 );
 	glUseProgram( shaderProgramID );
-	glEnableVertexAttribArray( positionID );
+	glEnableVertexAttribArray( colorID );
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 		glVertexPointer(3, GL_FLOAT, 0, 0);

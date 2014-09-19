@@ -24,17 +24,6 @@
 #include <iostream>
 #include <memory>
 
-struct Vec2
-{
-	float x;
-	float y;
-};
-
-struct Vec3
-{
-	float x;
-	float y;
-	float z;
-};
+#include "../3rd/wavefront_loader/wavefront_loader.hpp"
 
 #endif // _DEFINES_HPP_
