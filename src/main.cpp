@@ -5,7 +5,7 @@
 #include <fstream>
 
 #include "../3rd/wavefront_loader/wavefront_loader.hpp"
-#include "../include/window.hpp"
+#include "window.hpp"
 
 int main(int argc, char *argv[])
 {

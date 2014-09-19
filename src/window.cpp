@@ -1,7 +1,7 @@
 #include <fstream>
 
-#include "../include/window.hpp"
-#include "../include/resource_loader.hpp"
+#include "window.hpp"
+#include "resource_loader.hpp"
 
 SdlWindow::SdlWindow( int width, int height ) : width( width ), height( height )
 {

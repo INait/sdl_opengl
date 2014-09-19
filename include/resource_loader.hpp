@@ -3,7 +3,7 @@
 
 #include "../3rd/tinyxml/tinyxml.h"
 #include "../3rd/wavefront_loader/wavefront_loader.hpp"
-#include "../include/asset.hpp"
+#include "asset.hpp"
 
 #include <vector>
 #include <string>

@@ -2,7 +2,7 @@
 #define _ASSET_HPP_
 
 #include "../3rd/wavefront_loader/wavefront_loader.hpp"
-#include "../include/defines.hpp"
+#include "defines.hpp"
 
 class Asset
 {

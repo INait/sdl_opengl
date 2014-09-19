@@ -1,5 +1,5 @@
-#include "../include/asset.hpp"
-#include "../include/defines.hpp"
+#include "asset.hpp"
+#include "defines.hpp"
 
 Asset::Asset( const char * obj_path, const char * texture_path )
 {

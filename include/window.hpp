@@ -1,8 +1,8 @@
 #ifndef _WINDOW_HPP_
 #define _WINDOW_HPP_
 
-#include "../include/defines.hpp"
-#include "../include/asset.hpp"
+#include "defines.hpp"
+#include "asset.hpp"
 
 class SdlWindow
 {

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "../include/resource_loader.hpp"
+#include "resource_loader.hpp"
 
 ResourceLoader::ResourceLoader()
 {
