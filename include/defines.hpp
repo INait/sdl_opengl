@@ -9,6 +9,7 @@
 	#include <SDL.h>
 
 	#undef main
+	#define _CRT_SECURE_NO_WARNINGS
 #else
 	#include <SOIL/SOIL.h>
 	#include <SDL2/SDL.h>

@@ -2,6 +2,6 @@
 <resources>
 	<object path="../res/obj/">
 		<obj name="sphere" file="sphere.obj"/>
-		<texture name="rock" file="texture1.jpg"/>
+		<texture name="rock" file="ball_albedo.png"/>
 	</object>
 </resources>

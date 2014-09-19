@@ -4,21 +4,21 @@
 #include "defines.hpp"
 #include "asset.hpp"
 
-class SdlWindow
+class SdlEngine
 {
 public:
-	SdlWindow( int width, int height );
-	~SdlWindow();
+	SdlEngine();
+	~SdlEngine();
 
-	void Init( const std::string & res_location );
+	void Init( int width, int height, const std::string & res_location);
 
 	void GameLoop();
 
 private:
 	SDL_Window *window;
 
-	int width;
-	int height;
+	int width_;
+	int height_;
 
 	GLuint shaderProgramID;
 

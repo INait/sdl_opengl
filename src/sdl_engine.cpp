@@ -1,19 +1,21 @@
 #include <fstream>
 
-#include "window.hpp"
+#include "sdl_engine.hpp"
 #include "resource_loader.hpp"
 
-SdlWindow::SdlWindow( int width, int height ) : width( width ), height( height )
+SdlEngine::SdlEngine()
 {
 }
 
-SdlWindow::~SdlWindow()
+SdlEngine::~SdlEngine()
 {
 }
 
-void SdlWindow::Init( const std::string & res_location )
+void SdlEngine::Init( int width, int height, const std::string & res_location )
 {
 	// Инициализация SDL
+	width_ = width;
+	height_ = height;
 
 	if ( SDL_Init(SDL_INIT_VIDEO) < 0 )
 	{
@@ -30,7 +32,7 @@ void SdlWindow::Init( const std::string & res_location )
 
 	// Создаем окно с заголовком "Cube", размером 640х480 и расположенным по центру экрана.
 
-	window = SDL_CreateWindow("Sphere", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow("Sphere", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width_, height_, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
 	if(window == NULL) // если не получилось создать окно, то выходим
 		exit(1);
@@ -75,7 +77,7 @@ void SdlWindow::Init( const std::string & res_location )
 		(*asset_it)->SetShaderProgramID( shaderProgramID );
 }
 
-void SdlWindow::GameLoop()
+void SdlEngine::GameLoop()
 {
 	bool running = true;
 
@@ -122,13 +124,13 @@ void SdlWindow::GameLoop()
 	SDL_Quit(); // завершаем работу SDL и выходим
 }
 
-std::string SdlWindow::readShaderFile( const char* filename )
+std::string SdlEngine::readShaderFile( const char* filename )
 {
 	std::ifstream t( filename, std::ios::in );
 	std::string str;
 
 	t.seekg(0, std::ios::end);
-	str.reserve(t.tellg());
+	str.reserve((size_t)t.tellg());
 	t.seekg(0, std::ios::beg);
 
 	str.assign( ( std::istreambuf_iterator<char>( t ) ),
@@ -137,7 +139,7 @@ std::string SdlWindow::readShaderFile( const char* filename )
 	return str;
 }
 
-GLuint SdlWindow::makeVertexShader( const char* shaderSource )
+GLuint SdlEngine::makeVertexShader( const char* shaderSource )
 {
 	GLuint vertexShaderID = glCreateShader( GL_VERTEX_SHADER );
 	glShaderSource( vertexShaderID, 1, ( const GLchar** ) & shaderSource, NULL );
@@ -145,7 +147,7 @@ GLuint SdlWindow::makeVertexShader( const char* shaderSource )
 	return vertexShaderID;
 }
 
-GLuint SdlWindow::makeFragmentShader( const char* shaderSource )
+GLuint SdlEngine::makeFragmentShader( const char* shaderSource )
 {
 	GLuint fragmentShaderID = glCreateShader( GL_FRAGMENT_SHADER );
 	glShaderSource( fragmentShaderID, 1, ( const GLchar** ) & shaderSource, NULL );
@@ -153,7 +155,7 @@ GLuint SdlWindow::makeFragmentShader( const char* shaderSource )
 	return fragmentShaderID;
 }
 
-GLuint SdlWindow::makeShaderProgram( GLuint vertexShaderID, GLuint fragmentShaderID )
+GLuint SdlEngine::makeShaderProgram( GLuint vertexShaderID, GLuint fragmentShaderID )
 {
 	GLuint shaderID = glCreateProgram();
 	glAttachShader( shaderID, vertexShaderID );

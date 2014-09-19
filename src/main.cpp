@@ -1,18 +1,12 @@
-
-#include <string>
-#include <streambuf>
-#include <iostream> // стандартная библиотека ввода-вывода в C++
-#include <fstream>
-
-#include "../3rd/wavefront_loader/wavefront_loader.hpp"
-#include "window.hpp"
+#include "sdl_engine.hpp"
 
 int main(int argc, char *argv[])
 {
-	SdlWindow sdl_window( 640, 480 );
-	sdl_window.Init( "../res/res.xml" ); // инициализация
+	SdlEngine sdl_engine;
 
-	sdl_window.GameLoop();
+	sdl_engine.Init(640, 480, "../res/res.xml");
+
+	sdl_engine.GameLoop();
 
 	return 0;
 }

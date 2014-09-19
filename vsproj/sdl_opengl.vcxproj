@@ -43,7 +43,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>E:\dev\Simple OpenGL Image Library\lib;E:\dev\glext\lib;E:\dev\SDL2-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\..\build\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\..\obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -80,7 +82,7 @@
     <ClCompile Include="..\src\asset.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\resource_loader.cpp" />
-    <ClCompile Include="..\src\window.cpp" />
+    <ClCompile Include="..\src\sdl_engine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rd\tinyxml\tinystr.h" />
@@ -89,7 +91,7 @@
     <ClInclude Include="..\include\asset.hpp" />
     <ClInclude Include="..\include\defines.hpp" />
     <ClInclude Include="..\include\resource_loader.hpp" />
-    <ClInclude Include="..\include\window.hpp" />
+    <ClInclude Include="..\include\sdl_engine.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -30,9 +30,6 @@
     <ClCompile Include="..\src\resource_loader.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\window.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\3rd\tinyxml\tinystr.cpp">
       <Filter>3rd\tinyxml</Filter>
     </ClCompile>
@@ -44,6 +41,9 @@
     </ClCompile>
     <ClCompile Include="..\3rd\tinyxml\tinyxmlparser.cpp">
       <Filter>3rd\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\sdl_engine.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,14 +59,14 @@
     <ClInclude Include="..\include\resource_loader.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\window.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\3rd\tinyxml\tinystr.h">
       <Filter>3rd\tinyxml</Filter>
     </ClInclude>
     <ClInclude Include="..\3rd\tinyxml\tinyxml.h">
       <Filter>3rd\tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\sdl_engine.hpp">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -50,11 +50,10 @@ void Asset::Draw(float xrf, float yrf, float zrf)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	//glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glTranslatef( 0.0f, 0.0f, -6.0f );
-	glRotatef(xrf, 1.0f, 0.0f, 0.0f);   // Вращение куба по X, Y, Z
-	glRotatef(yrf, 0.0f, 1.0f, 0.0f);   // Вращение куба по X, Y, Z
-	glRotatef(zrf, 0.0f, 0.0f, 1.0f);   // Вращение куба по X, Y, Z
+	glRotatef(xrf, 1.0f, 0.0f, 0.0f);
+	glRotatef(yrf, 0.0f, 1.0f, 0.0f);
+	glRotatef(zrf, 0.0f, 0.0f, 1.0f);
 
 	GLuint positionID = glGetAttribLocation(shaderProgramID, "s_vPosition");
 	glVertexAttribPointer( positionID, 3, GL_FLOAT, GL_FALSE, 0, 0 );
