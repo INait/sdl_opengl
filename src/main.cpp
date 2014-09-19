@@ -82,7 +82,7 @@ void init()
 
 	// Создаем окно с заголовком "Cube", размером 640х480 и расположенным по центру экрана.
 
-	window = SDL_CreateWindow("Cube", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow("Sphere", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
 	if(window == NULL) // если не получилось создать окно, то выходим
 		exit(1);
@@ -118,7 +118,6 @@ void init()
 	GLuint vShaderID = makeVertexShader( vShaderSource.c_str() );
 	GLuint fShaderID = makeFragmentShader( fShaderSource.c_str() );
 	shaderProgramID = makeShaderProgram( vShaderID, fShaderID );
-	// glUseProgram( shaderProgramID );
 }
 
 class Asset
