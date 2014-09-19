@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <iterator>
 #include <cstdio>
 #include <cstring>
 
@@ -81,21 +82,21 @@ bool ObjWavefrontLoader(
 
 	fclose( file );
 
-	for( auto & face : f )
+	for( std::vector< Face >::const_iterator face_it = f.begin(); face_it != f.end(); ++face_it )
 	{
-		for( auto & v_i : face.v )
+		for( std::vector< int >::const_iterator v_it = face_it->v.begin(); v_it != face_it->v.end(); ++v_it )
 		{
-			Vec3 vertex = v[ v_i - 1 ];
+			Vec3 vertex = v[ *v_it - 1 ];
 			vertices.push_back( vertex );
 		}
-		for( auto & vt_i : face.vt )
+		for( std::vector< int >::const_iterator vt_it = face_it->vt.begin(); vt_it != face_it->vt.end(); ++vt_it )
 		{
-			Vec2 uv = vt[ vt_i - 1 ];
+			Vec2 uv = vt[ *vt_it - 1 ];
 			uvs.push_back( uv );
 		}
-		for( auto & vn_i : face.vn )
+		for( std::vector< int >::const_iterator vn_it = face_it->vn.begin(); vn_it != face_it->vn.end(); ++vn_it )
 		{
-			Vec3 normal = vn[ vn_i - 1 ];
+			Vec3 normal = vn[ *vn_it - 1 ];
 			normals.push_back( normal );
 		}
 	}
