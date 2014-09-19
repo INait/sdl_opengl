@@ -1,10 +1,10 @@
 #ifndef _ASSET_HPP_
 #define _ASSET_HPP_
 
-#include "../3rd/wavefront_loader/wavefront_loader.hpp"
 #include "defines.hpp"
+#include "object.hpp"
 
-class Asset
+class Asset : public Object
 {
 private:
 	std::vector< Vec3 > vertices;

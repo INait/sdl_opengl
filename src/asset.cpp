@@ -1,5 +1,6 @@
 #include "asset.hpp"
 #include "defines.hpp"
+#include "../3rd/wavefront_loader/wavefront_loader.hpp"
 
 Asset::Asset( const char * obj_path, const char * texture_path )
 {
@@ -61,7 +62,7 @@ void Asset::Draw(float xrf, float yrf, float zrf)
 	glEnableVertexAttribArray( positionID );
 
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, 0);
-	glDrawArrays(GL_TRIANGLES, 0, vertices.size() );
+		glVertexPointer(3, GL_FLOAT, 0, 0);
+		glDrawArrays(GL_TRIANGLES, 0, vertices.size() );
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
