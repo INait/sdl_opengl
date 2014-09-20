@@ -10,6 +10,7 @@ private:
 	std::vector< Vec3 > vertices;
 	std::vector< Vec2 > uvs;
 	std::vector< Vec3 > normals;
+	std::vector< Vec4 > colors;
 
 	// This will identify our vertex buffer
 	GLuint vertexbuffer;

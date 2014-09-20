@@ -54,16 +54,23 @@ int SdlEngine::Init( int width, int height, const std::string & res_location )
 	glMatrixMode(GL_MODELVIEW); // переходим в трехмерный режим
 
 	// shaders
-	std::string vShaderSource = "in vec4 s_vPosition; \
-								 void main() \
-								 { \
-									 gl_Position = s_vPosition; \
-								 }";
-	std::string fShaderSource = "out vec4 s_vColor; \
-								 void main() \
-								 { \
-									 s_vColor = vec4( 1.0, 0.0, 0.0, 1.0 ); \
-								 }";
+	std::string vShaderSource = "#version 130\n"
+								"\n"
+								"in vec4 s_vPosition;\n"
+								"in vec4 s_vColor;\n"
+								"out vec4 color;\n"
+								"void main() {\n"
+								"	color = s_vColor;\n"
+								"	gl_Position = s_vPosition;\n"
+								"}\n";
+	std::string fShaderSource = "#version 130\n"
+								"\n"
+								"in vec4 color;\n"
+								"out vec4 fColor;\n"
+								"\n"
+								"void main() {\n"
+								"	fColor = color;\n"
+								"}\n";
 	GLuint vShaderID = makeVertexShader( vShaderSource.c_str() );
 	GLuint fShaderID = makeFragmentShader( fShaderSource.c_str() );
 	shaderProgramID = makeShaderProgram( vShaderID, fShaderID );
@@ -71,8 +78,8 @@ int SdlEngine::Init( int width, int height, const std::string & res_location )
 	ResourceLoader res_loader;
 	res_loader.LoadXMLResources( res_location, assets );
 
-	for( std::vector< AssetPtr >::const_iterator asset_it = assets.begin(); asset_it != assets.end(); ++asset_it )
-		(*asset_it)->SetShaderProgramID( shaderProgramID );
+	for( auto & asset : assets )
+		asset->SetShaderProgramID( shaderProgramID );
 
 	return 0;
 }
@@ -146,6 +153,28 @@ void SdlEngine::GameLoop()
 	SDL_Quit();
 }
 
+void SdlEngine::ShaderLog(unsigned int shader)
+{
+	int   infologLen = 0;
+	int   charsWritten = 0;
+	char *infoLog;
+
+	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLen);
+
+	if (infologLen > 1)
+	{
+		infoLog = new char[infologLen];
+		if (infoLog == NULL)
+		{
+			std::cout << "ERROR: Could not allocate InfoLog buffer\n";
+			exit(1);
+		}
+		glGetShaderInfoLog(shader, infologLen, &charsWritten, infoLog);
+		std::cout << "InfoLog: " << infoLog << "\n\n\n";
+		delete[] infoLog;
+	}
+}
+
 std::string SdlEngine::readShaderFile( const char* filename )
 {
 	std::ifstream t( filename, std::ios::in );
@@ -166,6 +195,7 @@ GLuint SdlEngine::makeVertexShader( const char* shaderSource )
 	GLuint vertexShaderID = glCreateShader( GL_VERTEX_SHADER );
 	glShaderSource( vertexShaderID, 1, ( const GLchar** ) & shaderSource, NULL );
 	glCompileShader( vertexShaderID );
+	ShaderLog(vertexShaderID);
 	return vertexShaderID;
 }
 
@@ -174,6 +204,7 @@ GLuint SdlEngine::makeFragmentShader( const char* shaderSource )
 	GLuint fragmentShaderID = glCreateShader( GL_FRAGMENT_SHADER );
 	glShaderSource( fragmentShaderID, 1, ( const GLchar** ) & shaderSource, NULL );
 	glCompileShader( fragmentShaderID );
+	ShaderLog(fragmentShaderID);
 	return fragmentShaderID;
 }
 
@@ -183,5 +214,13 @@ GLuint SdlEngine::makeShaderProgram( GLuint vertexShaderID, GLuint fragmentShade
 	glAttachShader( shaderID, vertexShaderID );
 	glAttachShader( shaderID, fragmentShaderID );
 	glLinkProgram( shaderID );
+	
+	int link_ok;
+	glGetProgramiv(shaderID, GL_LINK_STATUS, &link_ok);
+	if (!link_ok)
+	{
+		std::cout << "error attach shaders \n";
+		return -1;
+	}
 	return shaderID;
 }

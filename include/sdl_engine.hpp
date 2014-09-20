@@ -26,6 +26,7 @@ private:
 	GLuint makeVertexShader( const char* shaderSource );
 	GLuint makeFragmentShader( const char* shaderSource );
 	GLuint makeShaderProgram( GLuint vertexShaderID, GLuint fragmentShaderID );
+	void ShaderLog(unsigned int shader);
 
 	std::vector< AssetPtr > assets;
 };

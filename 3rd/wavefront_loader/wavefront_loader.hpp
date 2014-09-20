@@ -16,6 +16,14 @@ struct Vec3
 	float z;
 };
 
+struct Vec4
+{
+	float r;
+	float g;
+	float b;
+	float a;
+};
+
 bool ObjWavefrontLoader(
 		const char* path,
 		std::vector< Vec3 > & vertices,
