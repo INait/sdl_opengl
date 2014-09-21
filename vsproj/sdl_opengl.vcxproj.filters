@@ -16,6 +16,9 @@
     <Filter Include="3rd\tinyxml">
       <UniqueIdentifier>{4ca9da16-12ce-4de7-aa29-a361ed817f1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{5e978d1a-5d36-4fd3-937d-23cf4095665c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rd\wavefront_loader\wavefront_loader.cpp">
@@ -45,6 +48,9 @@
     <ClCompile Include="..\src\sdl_engine.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\matrix_math.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rd\wavefront_loader\wavefront_loader.hpp">
@@ -71,5 +77,16 @@
     <ClInclude Include="..\include\object.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\matrix_math.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\shaders\fragmentShader.fsh">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\shaders\vertexShader.vsh">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

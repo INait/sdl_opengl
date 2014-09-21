@@ -1,20 +1,46 @@
 #include "asset.hpp"
 #include "defines.hpp"
+#include "matrix_math.hpp"
+#include "sdl_engine.hpp"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 Asset::Asset(const char * obj_path, const char * texture_path) : Object({ 0, 0, 0 }, { 0, 0, 0 })
 {
-	//if( ! ObjWavefrontLoader( obj_path, vertices, uvs, normals ) )
-	//	std::cout << "cannot load asset" << std::endl;
+	if (!ObjWavefrontLoader(obj_path, vertices, uvs, normals))
+		std::cout << "cannot load asset" << std::endl;
 
+	/*
 	vertices.push_back({ -0.5f, -0.5f, 0.0f });
 	vertices.push_back({ 0.5f, -0.5f, 0.0f });
 	vertices.push_back({ 0.0f, 0.5f, 0.0f });
-
+	for (int i = 0; i < vertices.size() / 3; i++)
+	{
 	colors.push_back({ 1.0f, 0.0f, 0.0f, 1.0f });
 	colors.push_back({ 0.0f, 1.0f, 0.0f, 1.0f });
 	colors.push_back({ 0.0f, 0.0f, 1.0f, 1.0f });
+	}
+
+	vertices.push_back({ -0.5f, -0.5f, 0.0f });
+	vertices.push_back({ 0.0f, -0.5f, 0.0f });
+	vertices.push_back({ -0.25f, 0.0f, 0.0f });
+	vertices.push_back({ -0.25f, 0.0f, 0.0f });
+	vertices.push_back({ 0.25f, 0.0f, 0.0f });
+	vertices.push_back({ 0.0f, 0.5f, 0.0f });
+	vertices.push_back({ 0.0f, -0.5f, 0.0f });
+	vertices.push_back({ 0.5f, -0.5f, 0.0f });
+	vertices.push_back({ 0.25f, 0.0f, 0.0f });
+
+	colors.push_back({ 1.0f, 0.00f, 0.0f, 1.0f });
+	colors.push_back({ 0.0f, 1.00f, 0.0f, 1.0f });
+	colors.push_back({ 0.0f, 0.0f, 1.0f, 1.0f });
+	colors.push_back({ 1.0f, 0.00f, 0.0f, 1.0f });
+	colors.push_back({ 0.0f, 1.00f, 0.0f, 1.0f });
+	colors.push_back({ 0.0f, 0.0f, 1.0f, 1.0f });
+	colors.push_back({ 1.0f, 0.00f, 0.0f, 1.0f });
+	colors.push_back({ 0.0f, 1.00f, 0.0f, 1.0f });
+	colors.push_back({ 0.0f, 0.0f, 1.0f, 1.0f });
+	*/
 
 	GLuint VertexArrayID;
 	glGenVertexArrays(1, &VertexArrayID);
@@ -27,10 +53,10 @@ Asset::Asset(const char * obj_path, const char * texture_path) : Object({ 0, 0, 
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 
 	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, ( sizeof(Vec3) + sizeof(Vec4) ) * vertices.size(), NULL, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, ( sizeof(Vec3) + sizeof(Vec3) ) * vertices.size(), NULL, GL_STATIC_DRAW);
 
 	glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vec3), &vertices[0]);
-	glBufferSubData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vec3), colors.size() * sizeof(Vec4), &colors[0]);
+	glBufferSubData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vec3), normals.size() * sizeof(Vec3), &normals[0]);
 
 	/* load an image file directly as a new OpenGL texture
 	texture_id = SOIL_load_OGL_texture
@@ -58,6 +84,7 @@ Asset::Asset(const char * obj_path, const char * texture_path) : Object({ 0, 0, 
 
 Asset::~Asset()
 {
+	engine_ = NULL;
 }
 
 void Asset::Draw()
@@ -65,20 +92,39 @@ void Asset::Draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	glTranslatef(position_.x, position_.y, position_.z);
-	glRotatef(orientation_.x, 1.0f, 0.0f, 0.0f);
-	glRotatef(orientation_.y, 0.0f, 1.0f, 0.0f);
-	glRotatef(orientation_.z, 0.0f, 0.0f, 1.0f);
-
-	GLuint positionID = glGetAttribLocation(shaderProgramID, "s_vPosition");
-	GLuint colorID = glGetAttribLocation(shaderProgramID, "s_vColor");
+	GLuint positionID = glGetAttribLocation(engine_->shaderProgramID, "s_vPosition");
+	GLuint normalID = glGetAttribLocation(engine_->shaderProgramID, "s_vNormal");
+	GLuint lightID = glGetUniformLocation(engine_->shaderProgramID, "vLight");	// NEW
 
 	glVertexAttribPointer(positionID, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glVertexAttribPointer(colorID, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(vertices.size() * sizeof(Vec3)));
+	glVertexAttribPointer(normalID, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(vertices.size() * sizeof(Vec3)));
 
-	glUseProgram(shaderProgramID);
 	glEnableVertexAttribArray(positionID);
-	glEnableVertexAttribArray(colorID);
+	glEnableVertexAttribArray(normalID);
+
+	glUseProgram(engine_->shaderProgramID);
+	engine_->theta += 0.01f;
+	engine_->scaleAmount = sin(engine_->theta);
+
+	// Fill the matrices with valid data
+	MatrixMath::makeScale(engine_->scaleMatrix, 0.1f, 0.1f, 0.1f);			// Fill the scaleMatrix variable
+	MatrixMath::makeRotateY(engine_->rotYMatrix, engine_->theta);						// Fill the rotYMatrix variable
+	MatrixMath::makeTranslate(engine_->transMatrix, 0.0f, 0.0f, position_.z);		// Fill the transMatrix to push the model back 1 "unit" into the scene
+	// Multiply them together 
+	MatrixMath::matrixMult4x4(engine_->tempMatrix1, engine_->rotYMatrix, engine_->scaleMatrix);	// Scale, then rotate...
+	MatrixMath::matrixMult4x4(engine_->M, engine_->transMatrix, engine_->tempMatrix1);	// ... then multiply THAT by the translate
+
+	// NEW!  Copy the rotations into the allRotsMatrix
+	MatrixMath::copyMatrix(engine_->rotYMatrix, engine_->allRotsMatrix);
+
+	// Important! Pass that data to the shader variables
+	glUniformMatrix4fv(engine_->modelMatrixID, 1, GL_TRUE, engine_->M);
+	glUniformMatrix4fv(engine_->viewMatrixID, 1, GL_TRUE, engine_->V);
+	glUniformMatrix4fv(engine_->perspectiveMatrixID, 1, GL_TRUE, engine_->P);
+	glUniformMatrix4fv(engine_->allRotsMatrixID, 1, GL_TRUE, engine_->allRotsMatrix);
+	glUniform4fv(engine_->lightID, 1, (GLfloat *)&engine_->light[0]);
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glVertexPointer(3, GL_FLOAT, 0, 0);
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size() );

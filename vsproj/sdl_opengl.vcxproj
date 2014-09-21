@@ -81,6 +81,7 @@
     <ClCompile Include="..\3rd\wavefront_loader\wavefront_loader.cpp" />
     <ClCompile Include="..\src\asset.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\matrix_math.cpp" />
     <ClCompile Include="..\src\resource_loader.cpp" />
     <ClCompile Include="..\src\sdl_engine.cpp" />
   </ItemGroup>
@@ -90,9 +91,14 @@
     <ClInclude Include="..\3rd\wavefront_loader\wavefront_loader.hpp" />
     <ClInclude Include="..\include\asset.hpp" />
     <ClInclude Include="..\include\defines.hpp" />
+    <ClInclude Include="..\include\matrix_math.hpp" />
     <ClInclude Include="..\include\object.hpp" />
     <ClInclude Include="..\include\resource_loader.hpp" />
     <ClInclude Include="..\include\sdl_engine.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\shaders\fragmentShader.fsh" />
+    <None Include="..\shaders\vertexShader.vsh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

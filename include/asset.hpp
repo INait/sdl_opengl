@@ -4,6 +4,8 @@
 #include "defines.hpp"
 #include "object.hpp"
 
+class SdlEngine;
+
 class Asset : public Object
 {
 private:
@@ -17,7 +19,7 @@ private:
 
 	GLuint texture_id;
 
-	GLuint shaderProgramID;
+	SdlEngine* engine_;
 public:
 
 	Asset( const char * object_path, const char * texture_path );
@@ -25,7 +27,7 @@ public:
 
 	virtual void Draw();
 
-	void SetShaderProgramID( const GLuint shaderProgramID ) { this->shaderProgramID = shaderProgramID; }
+	void SetSdlEngine(SdlEngine* engine) { engine_ = engine; }
 };
 
 typedef std::shared_ptr< Asset > AssetPtr;
