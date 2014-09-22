@@ -22,14 +22,6 @@ private:
 	int width_;
 	int height_;
 
-	GLuint shaderProgramID;
-
-	std::string readShaderFile( const char* filename );
-	GLuint makeVertexShader( const char* shaderSource );
-	GLuint makeFragmentShader( const char* shaderSource );
-	GLuint makeShaderProgram( GLuint vertexShaderID, GLuint fragmentShaderID );
-	void ShaderLog(unsigned int shader);
-
 	void InitMatrices();
 
 	// array of game objects

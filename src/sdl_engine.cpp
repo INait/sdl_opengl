@@ -175,61 +175,6 @@ void SdlEngine::GameLoop()
 	SDL_Quit();
 }
 
-void SdlEngine::ShaderLog(unsigned int shader)
-{
-	int   infologLen = 0;
-	int   charsWritten = 0;
-	char *infoLog;
-
-	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLen);
-
-	if (infologLen > 1)
-	{
-		infoLog = new char[infologLen];
-		if (infoLog == NULL)
-		{
-			std::cout << "ERROR: Could not allocate InfoLog buffer\n";
-			exit(1);
-		}
-		glGetShaderInfoLog(shader, infologLen, &charsWritten, infoLog);
-		std::cout << "InfoLog: " << infoLog << "\n\n\n";
-		delete[] infoLog;
-	}
-}
-
-std::string SdlEngine::readShaderFile( const char* filename )
-{
-	std::ifstream t( filename, std::ios::in );
-	std::string str;
-
-	t.seekg(0, std::ios::end);
-	str.reserve((size_t)t.tellg());
-	t.seekg(0, std::ios::beg);
-
-	str.assign( ( std::istreambuf_iterator<char>( t ) ),
-			std::istreambuf_iterator<char>() );
-
-	return str;
-}
-
-GLuint SdlEngine::makeVertexShader( const char* shaderSource )
-{
-	GLuint vertexShaderID = glCreateShader( GL_VERTEX_SHADER );
-	glShaderSource( vertexShaderID, 1, ( const GLchar** ) & shaderSource, NULL );
-	glCompileShader( vertexShaderID );
-	ShaderLog(vertexShaderID);
-	return vertexShaderID;
-}
-
-GLuint SdlEngine::makeFragmentShader( const char* shaderSource )
-{
-	GLuint fragmentShaderID = glCreateShader( GL_FRAGMENT_SHADER );
-	glShaderSource( fragmentShaderID, 1, ( const GLchar** ) & shaderSource, NULL );
-	glCompileShader( fragmentShaderID );
-	ShaderLog(fragmentShaderID);
-	return fragmentShaderID;
-}
-
 GLuint SdlEngine::makeShaderProgram( GLuint vertexShaderID, GLuint fragmentShaderID )
 {
 	GLuint shaderID = glCreateProgram();
