@@ -10,11 +10,14 @@ int main(int argc, char *argv[])
 
 	SdlEngine sdl_engine;
 
-	int error_code = sdl_engine.Init(640, 480, argv[ 1 ]);
-	if (error_code < 0)
-		return error_code;
-
-	sdl_engine.GameLoop();
+	try{
+		sdl_engine.Init(640, 480, argv[1]);
+		sdl_engine.GameLoop();
+	}
+	catch (std::exception & exception)
+	{
+		std::cout << exception.what() << std::endl;
+	}
 
 	return 0;
 }

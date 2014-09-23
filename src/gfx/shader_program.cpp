@@ -31,5 +31,5 @@ void ShaderProgram::MakeProgram()
 	int link_ok;
 	glGetProgramiv(shader_program_id_, GL_LINK_STATUS, &link_ok);
 	if (!link_ok)
-		std::cout << "error attach shaders \n";
+		throw std::runtime_error("Cannot attach shader");
 }

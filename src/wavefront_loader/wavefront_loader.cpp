@@ -13,7 +13,7 @@ struct Face
 	std::vector< int > vn;
 };
 
-bool ObjWavefrontLoader(
+void ObjWavefrontLoader(
 		const char* path,
 		std::vector< Vec3 > & vertices,
 		std::vector< Vec2 > & uvs,
@@ -23,10 +23,7 @@ bool ObjWavefrontLoader(
 	FILE* file = fopen( path, "r" );
 
 	if( file == NULL )
-	{
-		std::cout << "wrong file" << std::endl;
-		return false;
-	}
+		throw std::runtime_error("Cannot open OBJ file");
 
 	std::vector< Vec3 > v;
 	std::vector< Vec2 > vt;
@@ -66,11 +63,9 @@ bool ObjWavefrontLoader(
 					&vertexIndex[0], &uvIndex[0], &normalIndex[0],
 					&vertexIndex[1], &uvIndex[1], &normalIndex[1],
 					&vertexIndex[2], &uvIndex[2], &normalIndex[2] );
+
 			if( matches != 9 )
-			{
-				std::cout << "faces parsing error" << std::endl;
-				return false;
-			}
+				throw std::runtime_error("Error parsing OBJ file");
 
 			Face face;
 			std::copy( &vertexIndex[ 0 ], &vertexIndex[ 3 ], std::back_inserter( face.v ) );
@@ -100,7 +95,5 @@ bool ObjWavefrontLoader(
 			normals.push_back( normal );
 		}
 	}
-
-	return true;
 }
 

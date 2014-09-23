@@ -24,7 +24,7 @@ struct Vec4
 	float a;
 };
 
-bool ObjWavefrontLoader(
+void ObjWavefrontLoader(
 		const char* path,
 		std::vector< Vec3 > & vertices,
 		std::vector< Vec2 > & uvs,

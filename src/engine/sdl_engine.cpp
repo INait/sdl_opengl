@@ -13,17 +13,14 @@ SdlEngine::~SdlEngine()
 {
 }
 
-int SdlEngine::Init( int width, int height, const std::string & res_location )
+void SdlEngine::Init( int width, int height, const std::string & res_location )
 {
 	// Инициализация SDL
 	width_ = width;
 	height_ = height;
 
 	if ( SDL_Init(SDL_INIT_VIDEO) < 0 )
-	{
-		std::cout << "Unable to init SDL, error: " << SDL_GetError() << std::endl;
-		return -1;
-	}
+		throw std::runtime_error(SDL_GetError());
 
 	// Включаем двойной буфер, настраиваем цвета
 
@@ -37,12 +34,12 @@ int SdlEngine::Init( int width, int height, const std::string & res_location )
 	window = SDL_CreateWindow("Sphere", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width_, height_, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
 	if (window == NULL) // если не получилось создать окно, то выходим
-		return -2;
+		throw std::runtime_error("Couldn't create sdl window");
 
 	SDL_GLContext glcontext = SDL_GL_CreateContext(window); // создаем контекст OpenGL
 
 	if (glcontext == NULL) // если не получилось создать окно, то выходим
-		return -3;
+		throw std::runtime_error("Couldn't create sdl GL context");
 
 	// Инициализация OpenGL
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // устанавливаем фоновый цвет на черный
@@ -67,8 +64,6 @@ int SdlEngine::Init( int width, int height, const std::string & res_location )
 	resource_loader_->SetNewAssetFuction( std::bind( &SdlEngine::CreateAsset, this,
 				std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4) );
 	resource_loader_->LoadXMLResources( res_location );
-
-	return 0;
 }
 
 void SdlEngine::CreateAsset(const char* obj_file, const char* tex_file, const char* vsh_file, const char* fsh_file)

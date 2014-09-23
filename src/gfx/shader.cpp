@@ -39,6 +39,10 @@ void Shader::ShaderLog()
 std::string Shader::ReadShaderFile(const char* filename)
 {
 	std::ifstream t(filename, std::ios::in);
+
+	if (!t.is_open())
+		throw std::runtime_error(std::string("Cannot open shaders file") + filename);
+
 	std::string str;
 
 	t.seekg(0, std::ios::end);
