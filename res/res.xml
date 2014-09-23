@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <resources>
-	<object path="../res/">
+	<object path="res/">
 		<obj name="sphere" file="obj/sphere.obj"/>
 		<texture name="rock" file="obj/ball_albedo.png"/>
 		<vsh file="shaders/vertexShader.vsh"/>
