@@ -39,7 +39,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\dev\Simple OpenGL Image Library\src;E:\dev\glext\include;$(SolutionDir)\..\include;E:\dev\SDL2-2.0.1\include;$(IncludePath)</IncludePath>
+    <IncludePath>E:\dev\Simple OpenGL Image Library\src;E:\dev\glext\include;$(SolutionDir)\..\src;E:\dev\SDL2-2.0.1\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>E:\dev\Simple OpenGL Image Library\lib;E:\dev\glext\lib;E:\dev\SDL2-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
@@ -78,27 +78,42 @@
     <ClCompile Include="..\3rd\tinyxml\tinyxml.cpp" />
     <ClCompile Include="..\3rd\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="..\3rd\tinyxml\tinyxmlparser.cpp" />
-    <ClCompile Include="..\3rd\wavefront_loader\wavefront_loader.cpp" />
-    <ClCompile Include="..\src\asset.cpp" />
+    <ClCompile Include="..\src\engine\sdl_engine.cpp" />
+    <ClCompile Include="..\src\gfx\asset.cpp" />
+    <ClCompile Include="..\src\gfx\shader.cpp" />
+    <ClCompile Include="..\src\gfx\shader_program.cpp" />
     <ClCompile Include="..\src\main.cpp" />
-    <ClCompile Include="..\src\matrix_math.cpp" />
-    <ClCompile Include="..\src\resource_loader.cpp" />
-    <ClCompile Include="..\src\sdl_engine.cpp" />
+    <ClCompile Include="..\src\utils\matrix_math.cpp" />
+    <ClCompile Include="..\src\utils\resource_loader.cpp" />
+    <ClCompile Include="..\src\wavefront_loader\wavefront_loader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rd\tinyxml\tinystr.h" />
     <ClInclude Include="..\3rd\tinyxml\tinyxml.h" />
-    <ClInclude Include="..\3rd\wavefront_loader\wavefront_loader.hpp" />
-    <ClInclude Include="..\include\asset.hpp" />
-    <ClInclude Include="..\include\defines.hpp" />
-    <ClInclude Include="..\include\matrix_math.hpp" />
-    <ClInclude Include="..\include\object.hpp" />
-    <ClInclude Include="..\include\resource_loader.hpp" />
-    <ClInclude Include="..\include\sdl_engine.hpp" />
+    <ClInclude Include="..\src\defines.hpp" />
+    <ClInclude Include="..\src\engine\sdl_engine.hpp" />
+    <ClInclude Include="..\src\gfx\asset.hpp" />
+    <ClInclude Include="..\src\gfx\object.hpp" />
+    <ClInclude Include="..\src\gfx\shader.hpp" />
+    <ClInclude Include="..\src\gfx\shader_program.hpp" />
+    <ClInclude Include="..\src\utils\matrix_math.hpp" />
+    <ClInclude Include="..\src\utils\resource_loader.hpp" />
+    <ClInclude Include="..\src\wavefront_loader\wavefront_loader.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\shaders\fragmentShader.fsh" />
-    <None Include="..\shaders\vertexShader.vsh" />
+    <None Include="..\res\shaders\fragmentShader.fsh" />
+    <None Include="..\res\shaders\vertexShader.vsh" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\res\res.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\res\obj\ball_albedo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="..\res\obj\sphere.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </Object>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
