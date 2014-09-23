@@ -2,6 +2,7 @@
 #include "defines.hpp"
 #include "matrix_math.hpp"
 #include "sdl_engine.hpp"
+#include "shader_program.hpp"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -10,6 +11,17 @@ Asset::Asset(const char * obj_path, const char * texture_path) : Object({ 0, 0, 
 	if (!ObjWavefrontLoader(obj_path, vertices, uvs, normals))
 		std::cout << "cannot load asset" << std::endl;
 
+	shader_program_ = std::make_shared< ShaderProgram >( "../shaders/vertexShader.vsh", "../shaders/fragmentShader.fsh" );
+	GLuint shaderProgramID = shader_program_->GetID();
+
+	InitMatrices();
+
+	// ============ New! glUniformLocation is how you pull IDs for uniform variables===============
+	viewMatrixID = glGetUniformLocation(shaderProgramID, "mV");
+	modelMatrixID = glGetUniformLocation(shaderProgramID, "mM");
+	allRotsMatrixID = glGetUniformLocation(shaderProgramID, "mRotations");	// NEW
+	//=============================================================================================
+	//
 	/*
 	vertices.push_back({ -0.5f, -0.5f, 0.0f });
 	vertices.push_back({ 0.5f, -0.5f, 0.0f });
@@ -82,6 +94,29 @@ Asset::Asset(const char * obj_path, const char * texture_path) : Object({ 0, 0, 
 	*/
 }
 
+void Asset::SetSdlEngine(SdlEngine* engine)
+{
+	engine_ = engine;
+	engine_->perspectiveMatrixID = glGetUniformLocation(shader_program_->GetID(), "mP");
+}
+
+void Asset::InitMatrices()
+{
+	theta = 0.0f;
+	scaleAmount = 1.0f;
+
+	// Allocate memory for the matrices and initialize them to the Identity matrix
+	rotXMatrix = new GLfloat[16];	MatrixMath::makeIdentity(rotXMatrix);
+	rotYMatrix = new GLfloat[16];	MatrixMath::makeIdentity(rotYMatrix);
+	rotZMatrix = new GLfloat[16];	MatrixMath::makeIdentity(rotZMatrix);
+	transMatrix = new GLfloat[16];	MatrixMath::makeIdentity(transMatrix);
+	scaleMatrix = new GLfloat[16];	MatrixMath::makeIdentity(scaleMatrix);
+	tempMatrix1 = new GLfloat[16];	MatrixMath::makeIdentity(tempMatrix1);
+	allRotsMatrix = new GLfloat[16]; MatrixMath::makeIdentity(allRotsMatrix);
+	M = new GLfloat[16];			MatrixMath::makeIdentity(M);
+	V = new GLfloat[16];			MatrixMath::makeIdentity(V);
+}
+
 Asset::~Asset()
 {
 	engine_ = NULL;
@@ -92,9 +127,10 @@ void Asset::Draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	GLuint positionID = glGetAttribLocation(engine_->shaderProgramID, "s_vPosition");
-	GLuint normalID = glGetAttribLocation(engine_->shaderProgramID, "s_vNormal");
-	GLuint lightID = glGetUniformLocation(engine_->shaderProgramID, "vLight");	// NEW
+	GLuint shaderProgramID = shader_program_->GetID();
+	GLuint positionID = glGetAttribLocation(shaderProgramID, "s_vPosition");
+	GLuint normalID = glGetAttribLocation(shaderProgramID, "s_vNormal");
+	GLuint lightID = glGetUniformLocation(shaderProgramID, "vLight");	// NEW
 
 	glVertexAttribPointer(positionID, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glVertexAttribPointer(normalID, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(vertices.size() * sizeof(Vec3)));
@@ -102,27 +138,27 @@ void Asset::Draw()
 	glEnableVertexAttribArray(positionID);
 	glEnableVertexAttribArray(normalID);
 
-	glUseProgram(engine_->shaderProgramID);
-	engine_->theta += 0.01f;
-	engine_->scaleAmount = sin(engine_->theta);
+	glUseProgram(shaderProgramID);
+	theta += 0.01f;
+	scaleAmount = sin(theta);
 
 	// Fill the matrices with valid data
-	MatrixMath::makeScale(engine_->scaleMatrix, 0.1f, 0.1f, 0.1f);			// Fill the scaleMatrix variable
-	MatrixMath::makeRotateY(engine_->rotYMatrix, engine_->theta);						// Fill the rotYMatrix variable
-	MatrixMath::makeTranslate(engine_->transMatrix, 0.0f, 0.0f, position_.z);		// Fill the transMatrix to push the model back 1 "unit" into the scene
+	MatrixMath::makeScale(scaleMatrix, 0.1f, 0.1f, 0.1f);			// Fill the scaleMatrix variable
+	MatrixMath::makeRotateY(rotYMatrix, theta);						// Fill the rotYMatrix variable
+	MatrixMath::makeTranslate(transMatrix, 0.0f, 0.0f, position_.z);		// Fill the transMatrix to push the model back 1 "unit" into the scene
 	// Multiply them together 
-	MatrixMath::matrixMult4x4(engine_->tempMatrix1, engine_->rotYMatrix, engine_->scaleMatrix);	// Scale, then rotate...
-	MatrixMath::matrixMult4x4(engine_->M, engine_->transMatrix, engine_->tempMatrix1);	// ... then multiply THAT by the translate
+	MatrixMath::matrixMult4x4(tempMatrix1, rotYMatrix, scaleMatrix);	// Scale, then rotate...
+	MatrixMath::matrixMult4x4(M, transMatrix, tempMatrix1);	// ... then multiply THAT by the translate
 
 	// NEW!  Copy the rotations into the allRotsMatrix
-	MatrixMath::copyMatrix(engine_->rotYMatrix, engine_->allRotsMatrix);
+	MatrixMath::copyMatrix(rotYMatrix, allRotsMatrix);
 
 	// Important! Pass that data to the shader variables
-	glUniformMatrix4fv(engine_->modelMatrixID, 1, GL_TRUE, engine_->M);
-	glUniformMatrix4fv(engine_->viewMatrixID, 1, GL_TRUE, engine_->V);
+	glUniformMatrix4fv(modelMatrixID, 1, GL_TRUE, M);
+	glUniformMatrix4fv(viewMatrixID, 1, GL_TRUE, V);
 	glUniformMatrix4fv(engine_->perspectiveMatrixID, 1, GL_TRUE, engine_->P);
-	glUniformMatrix4fv(engine_->allRotsMatrixID, 1, GL_TRUE, engine_->allRotsMatrix);
-	glUniform4fv(engine_->lightID, 1, (GLfloat *)&engine_->light[0]);
+	glUniformMatrix4fv(allRotsMatrixID, 1, GL_TRUE, allRotsMatrix);
+	glUniform4fv(lightID, 1, (GLfloat *)&engine_->light[0]);
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 

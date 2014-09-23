@@ -10,7 +10,7 @@ void main () {
 	vec3 L = normalize(fL);
 	float diffuse_intensity = max(dot(N, L), 0.0);
 	//fColor = vec4(diffuse_intensity, diffuse_intensity, diffuse_intensity, 0.5);
-	
+
 	if (diffuse_intensity == 0) {
 		fColor = vec4(0.05, 0.05, 0.05, 1.0);
 	}

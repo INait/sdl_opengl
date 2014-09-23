@@ -9,6 +9,10 @@ Shader::Shader(const char * filename, int shader_type) :
 	shader_source_ = ReadShaderFile(filename);
 }
 
+Shader::~Shader()
+{
+}
+
 // FIXME: rewrite to use C++ vector instead of char*
 void Shader::ShaderLog()
 {

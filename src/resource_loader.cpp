@@ -11,7 +11,7 @@ ResourceLoader::~ResourceLoader()
 {
 }
 
-void ResourceLoader::LoadXMLResources( const std::string & res_location, std::vector< AssetPtr > & assets )
+void ResourceLoader::LoadXMLResources( const std::string & res_location )
 {
 	TiXmlDocument doc( res_location.c_str() );
 	if (!doc.LoadFile())
@@ -45,8 +45,7 @@ void ResourceLoader::LoadXMLResources( const std::string & res_location, std::ve
 				std::string tex_name = pTextureElem->Attribute("name");
 				std::string tex_file = resPrefix + pTextureElem->Attribute("file");
 
-				auto asset = std::make_shared< Asset >( obj_file.c_str(), tex_file.c_str() );
-				assets.push_back( asset );
+				new_asset_function_( obj_file.c_str(), tex_file.c_str() );
 			}
 		}
 		catch (const std::runtime_error &e)

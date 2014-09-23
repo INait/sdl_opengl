@@ -15,8 +15,10 @@ public:
 
 	std::string ReadShaderFile(const char* filename);
 	GLuint MakeShader();
-	//GLuint makeShaderProgram(GLuint vertexShaderID, GLuint fragmentShaderID);
 	void ShaderLog();
+
+	int GetID() const { return shader_id_; }
+	int GetType() const { return shader_type_; }
 
 private:
 
@@ -29,5 +31,7 @@ private:
 
 	std::string	shader_source_;
 };
+
+typedef std::shared_ptr< Shader > ShaderPtr;
 
 #endif // _SHADER_HPP_

@@ -2,6 +2,7 @@
 
 #include "sdl_engine.hpp"
 #include "resource_loader.hpp"
+#include "shader_program.hpp"
 #include "matrix_math.hpp"
 
 SdlEngine::SdlEngine()
@@ -54,53 +55,31 @@ int SdlEngine::Init( int width, int height, const std::string & res_location )
 	gluPerspective(45.0f, (float) width / (float) height, 0.1f, 100.0f); // настраиваем трехмерную перспективу
 	glMatrixMode(GL_MODELVIEW); // переходим в трехмерный режим
 
-	// shaders
-	std::string vShaderSource = readShaderFile("../shaders/vertexShader.vsh");
-	std::string fShaderSource = readShaderFile("../shaders/fragmentShader.fsh");
-	GLuint vShaderID = makeVertexShader( vShaderSource.c_str() );
-	GLuint fShaderID = makeFragmentShader( fShaderSource.c_str() );
-	shaderProgramID = makeShaderProgram( vShaderID, fShaderID );
-
-	// ============ New! glUniformLocation is how you pull IDs for uniform variables===============
-	perspectiveMatrixID = glGetUniformLocation(shaderProgramID, "mP");
-	viewMatrixID = glGetUniformLocation(shaderProgramID, "mV");
-	modelMatrixID = glGetUniformLocation(shaderProgramID, "mM");
-	allRotsMatrixID = glGetUniformLocation(shaderProgramID, "mRotations");	// NEW
-	//=============================================================================================
-
 	glEnable(GL_CULL_FACE);  // NEW! - we're doing real 3D now...  Cull (don't render) the backsides of triangles
 	glCullFace(GL_BACK);	// Other options?  GL_FRONT and GL_FRONT_AND_BACK
 	glEnable(GL_DEPTH_TEST);// Make sure the depth buffer is on.  As you draw a pixel, update the screen only if it's closer than previus ones
 
-	InitMatrices();
+	InitCamera();
 
 	light.push_back({ 0.0f, 1.0f, 1.0f, 1.0f });
 
-	ResourceLoader res_loader;
-	res_loader.LoadXMLResources( res_location, assets );
-
-	for( auto & asset : assets )
-		asset->SetSdlEngine( this );
+	resource_loader_ = std::make_shared< ResourceLoader >();
+	resource_loader_->SetNewAssetFuction( std::bind( &SdlEngine::CreateAsset, this, std::placeholders::_1, std::placeholders::_2 ) );
+	resource_loader_->LoadXMLResources( res_location );
 
 	return 0;
 }
 
-void SdlEngine::InitMatrices()
+void SdlEngine::CreateAsset(const char* obj_file, const char* tex_file)
 {
-	theta = 0.0f;
-	scaleAmount = 1.0f;
+	AssetPtr asset = std::make_shared< Asset >( obj_file, tex_file );
+	asset->SetSdlEngine( this );
+	assets.push_back( asset );
+}
 
-	// Allocate memory for the matrices and initialize them to the Identity matrix
-	rotXMatrix = new GLfloat[16];	MatrixMath::makeIdentity(rotXMatrix);
-	rotYMatrix = new GLfloat[16];	MatrixMath::makeIdentity(rotYMatrix);
-	rotZMatrix = new GLfloat[16];	MatrixMath::makeIdentity(rotZMatrix);
-	transMatrix = new GLfloat[16];	MatrixMath::makeIdentity(transMatrix);
-	scaleMatrix = new GLfloat[16];	MatrixMath::makeIdentity(scaleMatrix);
-	tempMatrix1 = new GLfloat[16];	MatrixMath::makeIdentity(tempMatrix1);
-	allRotsMatrix = new GLfloat[16]; MatrixMath::makeIdentity(allRotsMatrix);
-	M = new GLfloat[16];			MatrixMath::makeIdentity(M);
-	V = new GLfloat[16];			MatrixMath::makeIdentity(V);
-	P = new GLfloat[16];			MatrixMath::makeIdentity(P);
+void SdlEngine::InitCamera()
+{
+	MatrixMath::makeIdentity(P);
 
 	// Set up the (P)erspective matrix only once! Arguments are 1) the resulting matrix, 2) FoV, 3) aspect ratio, 4) near plane 5) far plane
 	MatrixMath::makePerspectiveMatrix(P, 30.0f, 1.0f, 1.0f, 1000.0f);
@@ -175,19 +154,3 @@ void SdlEngine::GameLoop()
 	SDL_Quit();
 }
 
-GLuint SdlEngine::makeShaderProgram( GLuint vertexShaderID, GLuint fragmentShaderID )
-{
-	GLuint shaderID = glCreateProgram();
-	glAttachShader( shaderID, vertexShaderID );
-	glAttachShader( shaderID, fragmentShaderID );
-	glLinkProgram( shaderID );
-	
-	int link_ok;
-	glGetProgramiv(shaderID, GL_LINK_STATUS, &link_ok);
-	if (!link_ok)
-	{
-		std::cout << "error attach shaders \n";
-		return -1;
-	}
-	return shaderID;
-}
