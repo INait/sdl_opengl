@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <resources>
-	<object path="../res/obj/">
-		<obj name="sphere" file="sphere.obj"/>
-		<texture name="rock" file="ball_albedo.png"/>
+	<object path="../res/">
+		<obj name="sphere" file="obj/sphere.obj"/>
+		<texture name="rock" file="obj/ball_albedo.png"/>
+		<vsh file="shaders/vertexShader.vsh"/>
+		<fsh file="shaders/fragmentShader.fsh"/>
 	</object>
 </resources>

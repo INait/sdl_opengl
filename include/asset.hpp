@@ -43,7 +43,9 @@ private:
 	GLfloat	 scaleAmount;	// In case the object is too big or small
 public:
 
-	Asset( const char * object_path, const char * texture_path );
+	Asset( const char * object_path, const char * texture_path,
+		   const char * vsh_path, const char * fsh_path );
+
 	virtual ~Asset();
 
 	virtual void Draw();

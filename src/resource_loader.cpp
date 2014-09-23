@@ -27,26 +27,17 @@ void ResourceLoader::LoadXMLResources( const std::string & res_location )
 		return;
 	}
 
-	// check if set param exists
-	TiXmlElement* pObjElem = pResElem->FirstChildElement("object");
-	std::string resPrefix = (pObjElem && pObjElem->Attribute("path")) ? pObjElem->Attribute("path") : "";
-
-	if (pObjElem)
+	for( TiXmlElement* pObjElem = pResElem->FirstChildElement("object"); pObjElem; pObjElem = pObjElem->NextSiblingElement("object") )
 	{
+		std::string resPrefix = (pObjElem && pObjElem->Attribute("path")) ? pObjElem->Attribute("path") : "";
 		try {
-			for (TiXmlElement* pObjectElem = pObjElem->FirstChildElement("obj"), * pTextureElem = pObjElem->FirstChildElement( "texture" );
-				 pObjectElem && pTextureElem;
-				 pObjectElem = pObjectElem->NextSiblingElement("obj"),
-				 pTextureElem = pTextureElem->NextSiblingElement("texture"))
-			{
-				std::string obj_name = pObjectElem->Attribute("name");
-				std::string obj_file = resPrefix + pObjectElem->Attribute("file");
+			std::string obj_file = resPrefix + pObjElem->FirstChildElement("obj")->Attribute("file");
+			std::string tex_file = resPrefix + pObjElem->FirstChildElement("texture")->Attribute("file");
+			std::string vsh_file = resPrefix + pObjElem->FirstChildElement("vsh")->Attribute("file");
+			std::string fsh_file = resPrefix + pObjElem->FirstChildElement("fsh")->Attribute("file");
 
-				std::string tex_name = pTextureElem->Attribute("name");
-				std::string tex_file = resPrefix + pTextureElem->Attribute("file");
-
-				new_asset_function_( obj_file.c_str(), tex_file.c_str() );
-			}
+			// create new asset with retrieved information
+			new_asset_function_( obj_file.c_str(), tex_file.c_str(), vsh_file.c_str(), fsh_file.c_str() );
 		}
 		catch (const std::runtime_error &e)
 		{

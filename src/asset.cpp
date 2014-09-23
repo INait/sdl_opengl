@@ -6,12 +6,13 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
-Asset::Asset(const char * obj_path, const char * texture_path) : Object({ 0, 0, 0 }, { 0, 0, 0 })
+Asset::Asset(const char * obj_path, const char * texture_path, const char * vsh_path, const char * fsh_path) :
+	Object({ 0, 0, 0 }, { 0, 0, 0 })
 {
 	if (!ObjWavefrontLoader(obj_path, vertices, uvs, normals))
 		std::cout << "cannot load asset" << std::endl;
 
-	shader_program_ = std::make_shared< ShaderProgram >( "../shaders/vertexShader.vsh", "../shaders/fragmentShader.fsh" );
+	shader_program_ = std::make_shared< ShaderProgram >( vsh_path, fsh_path );
 	GLuint shaderProgramID = shader_program_->GetID();
 
 	InitMatrices();

@@ -13,7 +13,7 @@ class ResourceLoader
 {
 public:
 
-	typedef std::function< void( const char* obj_file, const char* texture_file ) > NewAssetFunction;
+	typedef std::function< void( const char* obj_file, const char* texture_file, const char* vsh_path, const char* fsh_path ) > NewAssetFunction;
 
 	ResourceLoader();
 	~ResourceLoader();

@@ -64,15 +64,16 @@ int SdlEngine::Init( int width, int height, const std::string & res_location )
 	light.push_back({ 0.0f, 1.0f, 1.0f, 1.0f });
 
 	resource_loader_ = std::make_shared< ResourceLoader >();
-	resource_loader_->SetNewAssetFuction( std::bind( &SdlEngine::CreateAsset, this, std::placeholders::_1, std::placeholders::_2 ) );
+	resource_loader_->SetNewAssetFuction( std::bind( &SdlEngine::CreateAsset, this,
+				std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4) );
 	resource_loader_->LoadXMLResources( res_location );
 
 	return 0;
 }
 
-void SdlEngine::CreateAsset(const char* obj_file, const char* tex_file)
+void SdlEngine::CreateAsset(const char* obj_file, const char* tex_file, const char* vsh_file, const char* fsh_file)
 {
-	AssetPtr asset = std::make_shared< Asset >( obj_file, tex_file );
+	AssetPtr asset = std::make_shared< Asset >( obj_file, tex_file, vsh_file, fsh_file );
 	asset->SetSdlEngine( this );
 	assets.push_back( asset );
 }

@@ -31,7 +31,7 @@ private:
 	int width_;
 	int height_;
 
-	void CreateAsset(const char* obj_file, const char* tex_file);
+	void CreateAsset(const char* obj_file, const char* tex_file, const char* vsh_file, const char* fsh_file);
 
 	// array of game objects
 	std::vector< AssetPtr > assets;
