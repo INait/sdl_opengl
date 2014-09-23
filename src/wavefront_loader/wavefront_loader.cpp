@@ -3,6 +3,7 @@
 #include <iterator>
 #include <cstdio>
 #include <cstring>
+#include <stdexcept>
 
 #include "wavefront_loader.hpp"
 
