@@ -1,4 +1,4 @@
-#include "shader_program.hpp"
+#include "gfx/shader_program.hpp"
 
 ShaderProgram::ShaderProgram( const char* vertex_shader_path, const char* fragment_shader_path )
 {

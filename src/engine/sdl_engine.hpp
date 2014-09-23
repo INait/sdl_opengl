@@ -2,7 +2,7 @@
 #define _WINDOW_HPP_
 
 #include "defines.hpp"
-#include "asset.hpp"
+#include "gfx/asset.hpp"
 
 class ResourceLoader;
 class ShaderProgram;

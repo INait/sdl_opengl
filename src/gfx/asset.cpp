@@ -1,8 +1,8 @@
-#include "asset.hpp"
+#include "gfx/asset.hpp"
 #include "defines.hpp"
-#include "matrix_math.hpp"
-#include "sdl_engine.hpp"
-#include "shader_program.hpp"
+#include "utils/matrix_math.hpp"
+#include "engine/sdl_engine.hpp"
+#include "gfx/shader_program.hpp"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 

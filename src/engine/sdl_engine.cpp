@@ -1,9 +1,9 @@
 #include <fstream>
 
-#include "sdl_engine.hpp"
-#include "resource_loader.hpp"
-#include "shader_program.hpp"
-#include "matrix_math.hpp"
+#include "engine/sdl_engine.hpp"
+#include "utils/matrix_math.hpp"
+#include "utils/resource_loader.hpp"
+#include "gfx/shader_program.hpp"
 
 SdlEngine::SdlEngine()
 {

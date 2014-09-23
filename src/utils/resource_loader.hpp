@@ -1,10 +1,6 @@
 #ifndef _RESOURCE_LOADER_HPP_
 #define _RESOURCE_LOADER_HPP_
 
-#include "../3rd/tinyxml/tinyxml.h"
-#include "../3rd/wavefront_loader/wavefront_loader.hpp"
-#include "asset.hpp"
-
 #include <vector>
 #include <string>
 #include <functional>

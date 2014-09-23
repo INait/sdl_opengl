@@ -15,8 +15,8 @@
 	#include <SDL2/SDL.h>
 #endif
 
-#include <GL/gl.h> // Библиотека OpenGL
-#include <GL/glu.h> // Библиотека GLU
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include <GL/glext.h>
 
 #include <vector>
@@ -24,6 +24,6 @@
 #include <iostream>
 #include <memory>
 
-#include "../3rd/wavefront_loader/wavefront_loader.hpp"
+#include "wavefront_loader/wavefront_loader.hpp"
 
 #endif // _DEFINES_HPP_

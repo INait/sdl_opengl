@@ -2,7 +2,7 @@
 #define _SHADER_PROGRAM_HPP_
 
 #include "defines.hpp"
-#include "shader.hpp"
+#include "gfx/shader.hpp"
 
 class ShaderProgram
 {

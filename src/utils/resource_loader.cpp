@@ -1,7 +1,8 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "resource_loader.hpp"
+#include "utils/resource_loader.hpp"
+#include "../3rd/tinyxml/tinyxml.h"
 
 ResourceLoader::ResourceLoader()
 {

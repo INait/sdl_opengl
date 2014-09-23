@@ -1,4 +1,4 @@
-#include "matrix_math.hpp"
+#include "utils/matrix_math.hpp"
 
 #define T0 0
 #define T1 4

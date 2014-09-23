@@ -25,12 +25,17 @@ ENDMACRO( SET_FLAGS )
 
 SET_FLAGS( "-Wall" )
 
-INCLUDE_DIRECTORIES( include )
+INCLUDE_DIRECTORIES( src )
 
 FILE( REMOVE         ${CMAKE_BINARY_DIR}/build )
 FILE( MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/build )
 
-FILE(GLOB PROJ_SRC src/*.cpp)
-FILE(GLOB 3RD_SRC 3rd/wavefront_loader/*.cpp 3rd/tinyxml/*.cpp )
+FILE(GLOB PROJ_SRC src/*.cpp
+				   src/wavefront_loader/*.cpp
+				   src/engine/*.cpp
+				   src/gfx/*.cpp
+				   src/utils/*.cpp
+	)
+FILE(GLOB 3RD_SRC 3rd/tinyxml/*.cpp )
 ADD_EXECUTABLE( build/sdl_opengl ${PROJ_SRC} ${3RD_SRC} )
 TARGET_LINK_LIBRARIES( build/sdl_opengl SDL2 GL GLU SOIL )

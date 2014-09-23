@@ -2,7 +2,7 @@
 #define _ASSET_HPP_
 
 #include "defines.hpp"
-#include "object.hpp"
+#include "gfx/object.hpp"
 
 class SdlEngine;
 class ShaderProgram;
