@@ -25,8 +25,15 @@ public:
 	void InitCamera();
 
 private:
-	SDL_Window *window;
-	std::shared_ptr< ResourceLoader > resource_loader_;
+
+	// Auxiliary struct for correct SDL window deletion
+	struct SdlDeleter
+	{
+		void operator()(SDL_Window *p) const { SDL_DestroyWindow(p); }
+	};
+
+	std::unique_ptr< SDL_Window, SdlDeleter >		window;
+	std::shared_ptr< ResourceLoader >				resource_loader_;
 
 	int width_;
 	int height_;

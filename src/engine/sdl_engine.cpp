@@ -31,12 +31,12 @@ void SdlEngine::Init( int width, int height, const std::string & res_location )
 
 	// Создаем окно с заголовком "Cube", размером 640х480 и расположенным по центру экрана.
 
-	window = SDL_CreateWindow("Sphere", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width_, height_, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+	window.reset( SDL_CreateWindow("Sphere", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width_, height_, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL) );
 
-	if (window == NULL) // если не получилось создать окно, то выходим
+	if (window.get() == NULL) // если не получилось создать окно, то выходим
 		throw std::runtime_error("Couldn't create sdl window");
 
-	SDL_GLContext glcontext = SDL_GL_CreateContext(window); // создаем контекст OpenGL
+	SDL_GLContext glcontext = SDL_GL_CreateContext(window.get()); // создаем контекст OpenGL
 
 	if (glcontext == NULL) // если не получилось создать окно, то выходим
 		throw std::runtime_error("Couldn't create sdl GL context");
@@ -107,28 +107,28 @@ void SdlEngine::GameLoop()
 							running = false;
 							break;
 						case SDLK_w:
-							pos.z -= 0.1;
+							pos.z -= 0.1f;
 							break;
 						case SDLK_s:
-							pos.z += 0.1;
+							pos.z += 0.1f;
 							break;
 						case SDLK_a:
-							pos.x -= 0.1;
+							pos.x -= 0.1f;
 							break;
 						case SDLK_d:
-							pos.x += 0.1;
+							pos.x += 0.1f;
 							break;
 						case SDLK_UP:
-							orient.x += 0.5;
+							orient.x += 0.5f;
 							break;
 						case SDLK_DOWN:
-							orient.x -= 0.5;
+							orient.x -= 0.5f;
 							break;
 						case SDLK_LEFT:
-							orient.y -= 0.5;
+							orient.y -= 0.5f;
 							break;
 						case SDLK_RIGHT:
-							orient.y += 0.5;
+							orient.y += 0.5f;
 							break;
 					}
 					break;
@@ -144,7 +144,7 @@ void SdlEngine::GameLoop()
 		}
 
 		glFlush();
-		SDL_GL_SwapWindow(window);
+		SDL_GL_SwapWindow(window.get());
 	}
 
 	SDL_Quit();
