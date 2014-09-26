@@ -1,9 +1,18 @@
 <?xml version="1.0"?>
 <resources>
-	<object path="res/">
-		<obj name="sphere" file="obj/sphere.obj"/>
-		<texture name="rock" file="obj/ball_albedo.png"/>
-		<vsh file="shaders/vertexShader.vsh"/>
-		<fsh file="shaders/fragmentShader.fsh"/>
-	</object>
+  <objects path="res/obj/">
+    <model name="sphere" file="sphere.obj"/>
+  </objects>
+  
+  <textures path="res/textures/">
+    <texture name="ball" file="ball_albedo.png"/>
+  </textures>
+
+  <shaders path="res/shaders/">
+    <shader name="s1" vsh_file="vertexShader.vsh" fsh_file="fragmentShader.fsh"/>
+  </shaders>
+
+  <mts_objects>
+    <mts model="sphere" texture="ball" shader="s1"/>
+  </mts_objects>
 </resources>

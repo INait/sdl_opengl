@@ -61,16 +61,16 @@ void SdlEngine::Init( int width, int height, const std::string & res_location )
 	light.push_back({ 0.0f, 1.0f, 1.0f, 1.0f });
 
 	resource_loader_ = std::make_shared< ResourceLoader >();
-	resource_loader_->SetNewAssetFuction( std::bind( &SdlEngine::CreateAsset, this,
+	resource_loader_->SetNewModelFuction( std::bind( &SdlEngine::CreateModel, this,
 				std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4) );
 	resource_loader_->LoadXMLResources( res_location );
 }
 
-void SdlEngine::CreateAsset(const char* obj_file, const char* tex_file, const char* vsh_file, const char* fsh_file)
+void SdlEngine::CreateModel(const char* obj_file, const char* tex_file, const char* vsh_file, const char* fsh_file)
 {
-	AssetPtr asset = std::make_shared< Asset >( obj_file, tex_file, vsh_file, fsh_file );
-	asset->SetSdlEngine( this );
-	assets.push_back( asset );
+	ModelPtr model = std::make_shared< Model >( obj_file, tex_file, vsh_file, fsh_file );
+	model->SetSdlEngine( this );
+	models.push_back( model );
 }
 
 void SdlEngine::InitCamera()
@@ -136,11 +136,11 @@ void SdlEngine::GameLoop()
 		}
 
 		// Draw objects
-		for (auto & asset : assets)
+		for (auto & model : models)
 		{
-			asset->SetOrientation(orient);
-			asset->SetPosition(pos);
-			asset->Draw();
+			model->SetOrientation(orient);
+			model->SetPosition(pos);
+			model->Draw();
 		}
 
 		glFlush();

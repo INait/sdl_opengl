@@ -2,7 +2,7 @@
 #define _WINDOW_HPP_
 
 #include "defines.hpp"
-#include "gfx/asset.hpp"
+#include "gfx/model.hpp"
 
 class ResourceLoader;
 class ShaderProgram;
@@ -10,7 +10,7 @@ class ShaderProgram;
 class SdlEngine
 {
 public:
-	friend class Asset;
+	friend class Model;
 
 	SdlEngine();
 	~SdlEngine();
@@ -38,10 +38,10 @@ private:
 	int width_;
 	int height_;
 
-	void CreateAsset(const char* obj_file, const char* tex_file, const char* vsh_file, const char* fsh_file);
+	void CreateModel(const char* obj_file, const char* tex_file, const char* vsh_file, const char* fsh_file);
 
 	// array of game objects
-	std::vector< AssetPtr > assets;
+	std::vector< ModelPtr > models;
 
 	std::vector< Vec4 > light;
 };

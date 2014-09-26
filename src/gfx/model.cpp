@@ -1,4 +1,4 @@
-#include "gfx/asset.hpp"
+#include "gfx/model.hpp"
 #include "defines.hpp"
 #include "utils/matrix_math.hpp"
 #include "engine/sdl_engine.hpp"
@@ -6,20 +6,17 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
-Asset::Asset(const char * obj_path, const char * texture_path, const char * vsh_path, const char * fsh_path) :
+Model::Model(const char * obj_path) :
 	Object({ 0, 0, 0 }, { 0, 0, 0 })
 {
 	ObjWavefrontLoader(obj_path, vertices, uvs, normals);
 
-	shader_program_ = std::make_shared< ShaderProgram >( vsh_path, fsh_path );
-	GLuint shaderProgramID = shader_program_->GetID();
-
 	InitMatrices();
 
 	// ============ New! glUniformLocation is how you pull IDs for uniform variables===============
-	viewMatrixID = glGetUniformLocation(shaderProgramID, "mV");
-	modelMatrixID = glGetUniformLocation(shaderProgramID, "mM");
-	allRotsMatrixID = glGetUniformLocation(shaderProgramID, "mRotations");	// NEW
+	//viewMatrixID = glGetUniformLocation(shaderProgramID, "mV");
+	//modelMatrixID = glGetUniformLocation(shaderProgramID, "mM");
+	//allRotsMatrixID = glGetUniformLocation(shaderProgramID, "mRotations");	// NEW
 	//=============================================================================================
 	//
 	/*
@@ -94,13 +91,13 @@ Asset::Asset(const char * obj_path, const char * texture_path, const char * vsh_
 	*/
 }
 
-void Asset::SetSdlEngine(SdlEngine* engine)
+void Model::SetSdlEngine(SdlEngine* engine)
 {
-	engine_ = engine;
-	engine_->perspectiveMatrixID = glGetUniformLocation(shader_program_->GetID(), "mP");
+	//engine_ = engine;
+	//engine_->perspectiveMatrixID = glGetUniformLocation(shader_program_->GetID(), "mP");
 }
 
-void Asset::InitMatrices()
+void Model::InitMatrices()
 {
 	theta = 0.0f;
 	scaleAmount = 1.0f;
@@ -117,12 +114,12 @@ void Asset::InitMatrices()
 	V = new GLfloat[16];			MatrixMath::makeIdentity(V);
 }
 
-Asset::~Asset()
+Model::~Model()
 {
 	engine_ = NULL;
 }
 
-void Asset::Draw()
+void Model::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();

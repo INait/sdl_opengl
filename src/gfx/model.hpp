@@ -1,5 +1,5 @@
-#ifndef _ASSET_HPP_
-#define _ASSET_HPP_
+#ifndef _MODEL_HPP_
+#define _MODEL_HPP_
 
 #include "defines.hpp"
 #include "gfx/object.hpp"
@@ -7,7 +7,7 @@
 class SdlEngine;
 class ShaderProgram;
 
-class Asset : public Object
+class Model : public Object
 {
 private:
 	std::vector< Vec3 > vertices;
@@ -21,8 +21,6 @@ private:
 	GLuint texture_id;
 
 	SdlEngine* engine_;
-
-	std::shared_ptr< ShaderProgram >  shader_program_;
 
 	GLuint viewMatrixID;
 	GLuint modelMatrixID;
@@ -43,10 +41,9 @@ private:
 	GLfloat	 scaleAmount;	// In case the object is too big or small
 public:
 
-	Asset( const char * object_path, const char * texture_path,
-		   const char * vsh_path, const char * fsh_path );
+	Model( const char * object_path );
 
-	virtual ~Asset();
+	virtual ~Model();
 
 	virtual void Draw();
 	void InitMatrices();
@@ -54,6 +51,6 @@ public:
 	void SetSdlEngine(SdlEngine* engine);
 };
 
-typedef std::shared_ptr< Asset > AssetPtr;
+typedef std::shared_ptr< Model > ModelPtr;
 
-#endif // _ASSET_HPP_
+#endif // _MODEL_HPP_

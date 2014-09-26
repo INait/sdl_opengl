@@ -48,9 +48,6 @@
     <ClCompile Include="..\src\engine\sdl_engine.cpp">
       <Filter>src\engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\gfx\asset.cpp">
-      <Filter>src\gfx</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\gfx\shader.cpp">
       <Filter>src\gfx</Filter>
     </ClCompile>
@@ -69,6 +66,12 @@
     <ClCompile Include="..\src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\utils\resource_manager.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\gfx\model.cpp">
+      <Filter>src\gfx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rd\tinyxml\tinystr.h">
@@ -79,9 +82,6 @@
     </ClInclude>
     <ClInclude Include="..\src\engine\sdl_engine.hpp">
       <Filter>src\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\gfx\asset.hpp">
-      <Filter>src\gfx</Filter>
     </ClInclude>
     <ClInclude Include="..\src\gfx\object.hpp">
       <Filter>src\gfx</Filter>
@@ -103,6 +103,12 @@
     </ClInclude>
     <ClInclude Include="..\src\defines.hpp">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils\resource_manager.hpp">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\gfx\model.hpp">
+      <Filter>src\gfx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
