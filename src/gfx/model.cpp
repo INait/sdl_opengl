@@ -95,6 +95,7 @@ void Model::ActivateShaderProgram(GLuint shader_program_id)
 	viewMatrixID = glGetUniformLocation(shader_program_id_, "mV");
 	modelMatrixID = glGetUniformLocation(shader_program_id_, "mM");
 	allRotsMatrixID = glGetUniformLocation(shader_program_id_, "mRotations");	// NEW
+	ResourceManager::GetInstance().perspectiveMatrixID = glGetUniformLocation(shader_program_id_, "mP");
 	//=============================================================================================
 }
 
@@ -154,7 +155,10 @@ void Model::Draw()
 	glUniformMatrix4fv(viewMatrixID, 1, GL_TRUE, V);
 	glUniformMatrix4fv(ResourceManager::GetInstance().perspectiveMatrixID, 1, GL_TRUE, ResourceManager::GetInstance().P);
 	glUniformMatrix4fv(allRotsMatrixID, 1, GL_TRUE, allRotsMatrix);
-	glUniform4fv(lightID, 1, (GLfloat *)&ResourceManager::GetInstance().light[0]);
+
+	std::vector< Vec4 > light = ResourceManager::GetInstance().light;
+
+	glUniform4fv(lightID, 1, (GLfloat *)&light[0]);
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 

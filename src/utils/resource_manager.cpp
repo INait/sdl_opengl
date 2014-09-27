@@ -71,7 +71,7 @@ void ResourceManager::LoadXMLResources(const std::string & res_location)
 		std::string shader_name = pShaderElem->Attribute("name");
 
 		ShaderProgramPtr shader_program_ptr = std::make_shared< ShaderProgram >(vsh_file.c_str(), fsh_file.c_str());
-		shader_programs_.emplace(shader_name.c_str(), shader_program_ptr);
+		shader_programs_.emplace(shader_name, shader_program_ptr);
 	}
 
 	// Fill Model - Texture - Shader mapping
