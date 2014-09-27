@@ -14,11 +14,6 @@ Model::Model(const char * obj_path) :
 
 	InitMatrices();
 
-	// ============ New! glUniformLocation is how you pull IDs for uniform variables===============
-	viewMatrixID = glGetUniformLocation(shader_program_id_, "mV");
-	modelMatrixID = glGetUniformLocation(shader_program_id_, "mM");
-	allRotsMatrixID = glGetUniformLocation(shader_program_id_, "mRotations");	// NEW
-	//=============================================================================================
 	//
 	/*
 	vertices.push_back({ -0.5f, -0.5f, 0.0f });
@@ -90,6 +85,17 @@ Model::Model(const char * obj_path) :
 	glBindTexture(GL_TEXTURE_2D, texture_id);
 
 	*/
+}
+
+void Model::ActivateShaderProgram(GLuint shader_program_id)
+{
+	shader_program_id_ = shader_program_id;
+
+	// ============ New! glUniformLocation is how you pull IDs for uniform variables===============
+	viewMatrixID = glGetUniformLocation(shader_program_id_, "mV");
+	modelMatrixID = glGetUniformLocation(shader_program_id_, "mM");
+	allRotsMatrixID = glGetUniformLocation(shader_program_id_, "mRotations");	// NEW
+	//=============================================================================================
 }
 
 void Model::InitMatrices()

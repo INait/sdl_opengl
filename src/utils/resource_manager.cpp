@@ -75,7 +75,7 @@ void ResourceManager::LoadXMLResources(const std::string & res_location)
 	}
 
 	// Fill Model - Texture - Shader mapping
-	TiXmlElement* pMTSObjElem = pResElem->FirstChildElement("mts_object");
+	TiXmlElement* pMTSObjElem = pResElem->FirstChildElement("mts_objects");
 	for (TiXmlElement* pMTSElem = pMTSObjElem->FirstChildElement("mts"); pMTSElem; pMTSElem = pMTSElem->NextSiblingElement("mts"))
 	{
 		MTS_mapping mts;
@@ -86,7 +86,7 @@ void ResourceManager::LoadXMLResources(const std::string & res_location)
 		mts_mapping_.emplace_back(mts);
 
 		auto model_it = models_.find(mts.m);
-		model_it->second->SetShaderProgramID(shader_programs_.find(mts.s)->second->GetID());
+		model_it->second->ActivateShaderProgram(shader_programs_.find(mts.s)->second->GetID());
 		model_it->second->SetTextureID(textures_.find(mts.t)->second->GetID());
 	}
 }

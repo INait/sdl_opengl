@@ -47,7 +47,8 @@ public:
 	virtual void Draw();
 	void InitMatrices();
 
-	void SetShaderProgramID(GLuint shader_program_id) { shader_program_id_ = shader_program_id; }
+	void ActivateShaderProgram(GLuint shader_program_id);
+
 	void SetTextureID(GLuint texture_id) { texture_id_ = texture_id; }
 };
 
