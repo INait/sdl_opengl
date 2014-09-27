@@ -32,6 +32,8 @@ public:
 
 	void InitCamera();
 	
+	void FreeResources();
+
 	std::vector< Vec4 > light;
 
 	std::map< std::string /* model_id */, ModelPtr >				models_;

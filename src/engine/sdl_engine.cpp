@@ -126,6 +126,7 @@ void SdlEngine::GameLoop()
 		SDL_GL_SwapWindow(window.get());
 	}
 
+	ResourceManager::GetInstance().FreeResources();
 	SDL_Quit();
 }
 

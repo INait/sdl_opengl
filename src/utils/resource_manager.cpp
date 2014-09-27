@@ -27,6 +27,13 @@ void ResourceManager::InitCamera()
 	MatrixMath::makePerspectiveMatrix(P, 30.0f, 1.0f, 1.0f, 1000.0f);
 }
 
+void ResourceManager::FreeResources()
+{
+	textures_.clear();
+	shader_programs_.clear();
+	models_.clear();
+}
+
 void ResourceManager::LoadXMLResources(const std::string & res_location)
 {
 	TiXmlDocument doc(res_location.c_str());
