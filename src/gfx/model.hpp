@@ -18,9 +18,8 @@ private:
 	// This will identify our vertex buffer
 	GLuint vertexbuffer;
 
-	GLuint texture_id;
-
-	SdlEngine* engine_;
+	GLuint texture_id_;
+	GLuint shader_program_id_;
 
 	GLuint viewMatrixID;
 	GLuint modelMatrixID;
@@ -48,7 +47,8 @@ public:
 	virtual void Draw();
 	void InitMatrices();
 
-	void SetSdlEngine(SdlEngine* engine);
+	void SetShaderProgramID(GLuint shader_program_id) { shader_program_id_ = shader_program_id; }
+	void SetTextureID(GLuint texture_id) { texture_id_ = texture_id; }
 };
 
 typedef std::shared_ptr< Model > ModelPtr;

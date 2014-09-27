@@ -20,6 +20,6 @@ public:
 	GLuint GetID() { return shader_program_id_; }
 };
 
-typedef std::make_shared< ShaderProgram > ShaderProgramPtr;
+typedef std::shared_ptr< ShaderProgram > ShaderProgramPtr;
 
 #endif // _SHADER_PROGRAM_HPP_

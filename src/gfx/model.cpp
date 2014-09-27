@@ -3,6 +3,7 @@
 #include "utils/matrix_math.hpp"
 #include "engine/sdl_engine.hpp"
 #include "gfx/shader_program.hpp"
+#include "utils/resource_manager.hpp"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -14,9 +15,9 @@ Model::Model(const char * obj_path) :
 	InitMatrices();
 
 	// ============ New! glUniformLocation is how you pull IDs for uniform variables===============
-	//viewMatrixID = glGetUniformLocation(shaderProgramID, "mV");
-	//modelMatrixID = glGetUniformLocation(shaderProgramID, "mM");
-	//allRotsMatrixID = glGetUniformLocation(shaderProgramID, "mRotations");	// NEW
+	viewMatrixID = glGetUniformLocation(shader_program_id_, "mV");
+	modelMatrixID = glGetUniformLocation(shader_program_id_, "mM");
+	allRotsMatrixID = glGetUniformLocation(shader_program_id_, "mRotations");	// NEW
 	//=============================================================================================
 	//
 	/*
@@ -91,12 +92,6 @@ Model::Model(const char * obj_path) :
 	*/
 }
 
-void Model::SetSdlEngine(SdlEngine* engine)
-{
-	//engine_ = engine;
-	//engine_->perspectiveMatrixID = glGetUniformLocation(shader_program_->GetID(), "mP");
-}
-
 void Model::InitMatrices()
 {
 	theta = 0.0f;
@@ -116,7 +111,6 @@ void Model::InitMatrices()
 
 Model::~Model()
 {
-	engine_ = NULL;
 }
 
 void Model::Draw()
@@ -124,10 +118,9 @@ void Model::Draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	GLuint shaderProgramID = shader_program_->GetID();
-	GLuint positionID = glGetAttribLocation(shaderProgramID, "s_vPosition");
-	GLuint normalID = glGetAttribLocation(shaderProgramID, "s_vNormal");
-	GLuint lightID = glGetUniformLocation(shaderProgramID, "vLight");	// NEW
+	GLuint positionID = glGetAttribLocation(shader_program_id_, "s_vPosition");
+	GLuint normalID = glGetAttribLocation(shader_program_id_, "s_vNormal");
+	GLuint lightID = glGetUniformLocation(shader_program_id_, "vLight");	// NEW
 
 	glVertexAttribPointer(positionID, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glVertexAttribPointer(normalID, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(vertices.size() * sizeof(Vec3)));
@@ -135,7 +128,7 @@ void Model::Draw()
 	glEnableVertexAttribArray(positionID);
 	glEnableVertexAttribArray(normalID);
 
-	glUseProgram(shaderProgramID);
+	glUseProgram(shader_program_id_);
 	theta += 0.01f;
 	scaleAmount = sin(theta);
 
@@ -153,9 +146,9 @@ void Model::Draw()
 	// Important! Pass that data to the shader variables
 	glUniformMatrix4fv(modelMatrixID, 1, GL_TRUE, M);
 	glUniformMatrix4fv(viewMatrixID, 1, GL_TRUE, V);
-	glUniformMatrix4fv(engine_->perspectiveMatrixID, 1, GL_TRUE, engine_->P);
+	glUniformMatrix4fv(ResourceManager::GetInstance().perspectiveMatrixID, 1, GL_TRUE, ResourceManager::GetInstance().P);
 	glUniformMatrix4fv(allRotsMatrixID, 1, GL_TRUE, allRotsMatrix);
-	glUniform4fv(lightID, 1, (GLfloat *)&engine_->light[0]);
+	glUniform4fv(lightID, 1, (GLfloat *)&ResourceManager::GetInstance().light[0]);
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 

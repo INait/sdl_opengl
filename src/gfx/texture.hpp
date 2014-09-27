@@ -9,6 +9,7 @@ public:
 	Texture();
 	~Texture();
 
+	int GetID() { return texture_id_; }
 private:
 
 	int texture_id_;

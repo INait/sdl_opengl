@@ -3,12 +3,15 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
-class Model;
-class Texture;
-class ShaderProgram;
+#include "utils/singleton.hpp"
 
-class ResourceManager
+#include "gfx/model.hpp"
+#include "gfx/texture.hpp"
+#include "gfx/shader_program.hpp"
+
+class ResourceManager : public ISingletonable< ResourceManager >
 {
 public:
 	ResourceManager();
@@ -23,11 +26,19 @@ public:
 		std::string s;  // shader_program_id
 	};
 
-private:
 
-	std::map< std::string /* model_id */, Model >				models_;
-	std::map< std::string /* texture_id */, Texture >			textures_;
-	std::map< std::string /* shader_id */, ShaderProgram >		shader_programs_;
+	GLuint perspectiveMatrixID;
+	GLfloat P[16];				// The perspective matrix for the camera (to give the scene depth); initialize this ONLY ONCE!
+
+	void InitCamera();
+	
+	std::vector< Vec4 > light;
+
+	std::map< std::string /* model_id */, ModelPtr >				models_;
+
+private:
+	std::map< std::string /* texture_id */, TexturePtr >			textures_;
+	std::map< std::string /* shader_id */, ShaderProgramPtr >		shader_programs_;
 
 	std::vector< MTS_mapping >							mts_mapping_;
 };

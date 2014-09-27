@@ -4,7 +4,7 @@
 #include "defines.hpp"
 #include "gfx/model.hpp"
 
-class ResourceLoader;
+class ResourceManager;
 class ShaderProgram;
 
 class SdlEngine
@@ -19,10 +19,6 @@ public:
 
 	void GameLoop();
 
-	GLuint perspectiveMatrixID;
-	GLfloat P[16];				// The perspective matrix for the camera (to give the scene depth); initialize this ONLY ONCE!
-
-	void InitCamera();
 
 private:
 
@@ -33,17 +29,12 @@ private:
 	};
 
 	std::unique_ptr< SDL_Window, SdlDeleter >		window;
-	std::shared_ptr< ResourceLoader >				resource_loader_;
+	std::shared_ptr< ResourceManager >				resource_manager_;
 
 	int width_;
 	int height_;
 
 	void CreateModel(const char* obj_file, const char* tex_file, const char* vsh_file, const char* fsh_file);
-
-	// array of game objects
-	std::vector< ModelPtr > models;
-
-	std::vector< Vec4 > light;
 };
 
 #endif // _WINDOW_HPP_

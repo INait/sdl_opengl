@@ -116,6 +116,9 @@
     <ClInclude Include="..\src\gfx\texture.hpp">
       <Filter>src\gfx</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\utils\singleton.hpp">
+      <Filter>src\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\shaders\fragmentShader.fsh">

@@ -1,8 +1,7 @@
 #include <fstream>
 
 #include "engine/sdl_engine.hpp"
-#include "utils/matrix_math.hpp"
-#include "utils/resource_loader.hpp"
+#include "utils/resource_manager.hpp"
 #include "gfx/shader_program.hpp"
 
 SdlEngine::SdlEngine()
@@ -56,29 +55,9 @@ void SdlEngine::Init( int width, int height, const std::string & res_location )
 	glCullFace(GL_BACK);	// Other options?  GL_FRONT and GL_FRONT_AND_BACK
 	glEnable(GL_DEPTH_TEST);// Make sure the depth buffer is on.  As you draw a pixel, update the screen only if it's closer than previus ones
 
-	InitCamera();
-
-	light.push_back({ 0.0f, 1.0f, 1.0f, 1.0f });
-
-	resource_loader_ = std::make_shared< ResourceLoader >();
-	resource_loader_->SetNewModelFuction( std::bind( &SdlEngine::CreateModel, this,
-				std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4) );
-	resource_loader_->LoadXMLResources( res_location );
-}
-
-void SdlEngine::CreateModel(const char* obj_file, const char* tex_file, const char* vsh_file, const char* fsh_file)
-{
-	ModelPtr model = std::make_shared< Model >( obj_file, tex_file, vsh_file, fsh_file );
-	model->SetSdlEngine( this );
-	models.push_back( model );
-}
-
-void SdlEngine::InitCamera()
-{
-	MatrixMath::makeIdentity(P);
-
-	// Set up the (P)erspective matrix only once! Arguments are 1) the resulting matrix, 2) FoV, 3) aspect ratio, 4) near plane 5) far plane
-	MatrixMath::makePerspectiveMatrix(P, 30.0f, 1.0f, 1.0f, 1000.0f);
+	resource_manager_ = std::make_shared< ResourceManager >();
+	ResourceManager::SetInstance(*resource_manager_);
+	resource_manager_->LoadXMLResources(res_location);
 }
 
 void SdlEngine::GameLoop()
@@ -136,11 +115,11 @@ void SdlEngine::GameLoop()
 		}
 
 		// Draw objects
-		for (auto & model : models)
+		for (auto & model : ResourceManager::GetInstance().models_)
 		{
-			model->SetOrientation(orient);
-			model->SetPosition(pos);
-			model->Draw();
+			model.second->SetOrientation(orient);
+			model.second->SetPosition(pos);
+			model.second->Draw();
 		}
 
 		glFlush();

@@ -2,15 +2,29 @@
 #include "gfx/model.hpp"
 #include "gfx/texture.hpp"
 #include "gfx/shader_program.hpp"
+#include "utils/matrix_math.hpp"
 
 #include "../3rd/tinyxml/tinyxml.h"
 
+DECLARE_SINGLETON_VAR( ResourceManager )
+
 ResourceManager::ResourceManager()
 {
+	InitCamera();
+
+	light.push_back({ 0.0f, 1.0f, 1.0f, 1.0f });
 }
 
 ResourceManager::~ResourceManager()
 {
+}
+
+void ResourceManager::InitCamera()
+{
+	MatrixMath::makeIdentity(P);
+
+	// Set up the (P)erspective matrix only once! Arguments are 1) the resulting matrix, 2) FoV, 3) aspect ratio, 4) near plane 5) far plane
+	MatrixMath::makePerspectiveMatrix(P, 30.0f, 1.0f, 1.0f, 1000.0f);
 }
 
 void ResourceManager::LoadXMLResources(const std::string & res_location)
@@ -44,7 +58,7 @@ void ResourceManager::LoadXMLResources(const std::string & res_location)
 		std::string texture_name = pTextureElem->Attribute("name");
 
 		TexturePtr texture_ptr = std::make_shared< Texture >(/* texture_path.c_str() */);
-		models_.emplace(texture_name, texture_ptr);
+		textures_.emplace(texture_name, texture_ptr);
 	}
 
 	// Fill shaders
@@ -70,5 +84,9 @@ void ResourceManager::LoadXMLResources(const std::string & res_location)
 		mts.s = pMTSElem->Attribute("shader");
 
 		mts_mapping_.emplace_back(mts);
+
+		auto model_it = models_.find(mts.m);
+		model_it->second->SetShaderProgramID(shader_programs_.find(mts.s)->second->GetID());
+		model_it->second->SetTextureID(textures_.find(mts.t)->second->GetID());
 	}
 }
