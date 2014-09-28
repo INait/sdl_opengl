@@ -64,7 +64,7 @@ void ResourceManager::LoadXMLResources(const std::string & res_location)
 		std::string texture_path = prefix + pTextureElem->Attribute("file");
 		std::string texture_name = pTextureElem->Attribute("name");
 
-		TexturePtr texture_ptr = std::make_shared< Texture >(/* texture_path.c_str() */);
+		TexturePtr texture_ptr = std::make_shared< Texture >(texture_path.c_str());
 		textures_.emplace(texture_name, texture_ptr);
 	}
 
@@ -93,7 +93,8 @@ void ResourceManager::LoadXMLResources(const std::string & res_location)
 		mts_mapping_.emplace_back(mts);
 
 		auto model_it = models_.find(mts.m);
+
 		model_it->second->ActivateShaderProgram(shader_programs_.find(mts.s)->second->GetID());
-		model_it->second->SetTextureID(textures_.find(mts.t)->second->GetID());
+		model_it->second->ApplyTexture(textures_.find(mts.t)->second->GetID());
 	}
 }

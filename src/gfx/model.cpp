@@ -58,33 +58,11 @@ Model::Model(const char * obj_path) :
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 
 	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, ( sizeof(Vec3) + sizeof(Vec3) ) * vertices.size(), NULL, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vec3) + normals.size() * sizeof(Vec3) + uvs.size() * sizeof(Vec2), NULL, GL_STATIC_DRAW);
 
 	glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vec3), &vertices[0]);
 	glBufferSubData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vec3), normals.size() * sizeof(Vec3), &normals[0]);
-
-	/* load an image file directly as a new OpenGL texture
-	texture_id = SOIL_load_OGL_texture
-		(
-		 texture_path,
-		 SOIL_LOAD_AUTO,
-		 SOIL_CREATE_NEW_ID,
-		 SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-		);
-
-	int img_width, img_height;
-	unsigned char* img = SOIL_load_image(texture_path, &img_width, &img_height, NULL, 0);
-
-	glGenTextures(1, &texture_id);
-	glBindTexture(GL_TEXTURE_2D, texture_id);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img_width, img_height, 0, GL_RGB, GL_UNSIGNED_BYTE, img);
-
-	glGenTextures(1, &texture_id);
-
-	glBindTexture(GL_TEXTURE_2D, texture_id);
-
-	*/
+	glBufferSubData(GL_ARRAY_BUFFER, (vertices.size() + normals.size()) * sizeof(Vec3), uvs.size() * sizeof(Vec2), &uvs[0]);
 }
 
 void Model::ActivateShaderProgram(GLuint shader_program_id)
@@ -97,6 +75,11 @@ void Model::ActivateShaderProgram(GLuint shader_program_id)
 	allRotsMatrixID = glGetUniformLocation(shader_program_id_, "mRotations");	// NEW
 	ResourceManager::GetInstance().perspectiveMatrixID = glGetUniformLocation(shader_program_id_, "mP");
 	//=============================================================================================
+}
+
+void Model::ApplyTexture(GLuint texture_id)
+{
+	texture_id_ = texture_id;
 }
 
 void Model::InitMatrices()
@@ -128,12 +111,20 @@ void Model::Draw()
 	GLuint positionID = glGetAttribLocation(shader_program_id_, "s_vPosition");
 	GLuint normalID = glGetAttribLocation(shader_program_id_, "s_vNormal");
 	GLuint lightID = glGetUniformLocation(shader_program_id_, "vLight");
+	GLuint texCoordID = glGetAttribLocation(shader_program_id_, "s_vTexCoord");
 
 	glVertexAttribPointer(positionID, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glVertexAttribPointer(normalID, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(vertices.size() * sizeof(Vec3)));
+	int textureCoordOffset = (vertices.size() + normals.size()) * sizeof(Vec3);
+	glVertexAttribPointer(texCoordID, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(textureCoordOffset));
 
 	glEnableVertexAttribArray(positionID);
 	glEnableVertexAttribArray(normalID);
+	glEnableVertexAttribArray(texCoordID);
+
+	GLuint texID = glGetUniformLocation(shader_program_id_, "texture");
+	glActiveTexture(GL_TEXTURE0);				// Turn on texture unit 0
+	glUniform1i(texID, 0);						// Tell "s_vTexCoord" to use the 0th texture unit
 
 	glUseProgram(shader_program_id_);
 	theta += 0.01f;

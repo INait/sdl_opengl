@@ -1,18 +1,19 @@
 #ifndef _TEXTURE_HPP_
 #define _TEXTURE_HPP_
 
+#include "defines.hpp"
 #include <memory>
 
 class Texture
 {
 public:
-	Texture();
+	Texture(const char* texture_path);
 	~Texture();
 
-	int GetID() { return texture_id_; }
+	GLuint GetID() { return texture_id_; }
 private:
 
-	int texture_id_;
+	GLuint texture_id_;
 };
 
 typedef std::shared_ptr< Texture > TexturePtr;

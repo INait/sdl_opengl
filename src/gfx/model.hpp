@@ -19,6 +19,7 @@ private:
 	GLuint vertexbuffer;
 
 	GLuint texture_id_;
+	GLuint tex_coord_id_;
 	GLuint shader_program_id_;
 
 	GLuint viewMatrixID;
@@ -49,7 +50,7 @@ public:
 
 	void ActivateShaderProgram(GLuint shader_program_id);
 
-	void SetTextureID(GLuint texture_id) { texture_id_ = texture_id; }
+	void ApplyTexture(GLuint texture_id);
 };
 
 typedef std::shared_ptr< Model > ModelPtr;
