@@ -42,7 +42,7 @@ private:
 	std::map< std::string /* texture_id */, TexturePtr >			textures_;
 	std::map< std::string /* shader_id */, ShaderProgramPtr >		shader_programs_;
 
-	std::vector< MTS_mapping >							mts_mapping_;
+	std::vector< MTS_mapping >										mts_mapping_;
 };
 
 #endif // _RESOURCE_MANAGER_HPP_

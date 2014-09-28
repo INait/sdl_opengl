@@ -44,12 +44,11 @@ void SdlEngine::Init( int width, int height, const std::string & res_location )
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // устанавливаем фоновый цвет на черный
 	glClearDepth(1.0);
 	glDepthFunc(GL_LESS);
-	glEnable(GL_DEPTH_TEST); // включаем тест глубины
 	glShadeModel(GL_SMOOTH);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45.0f, (float) width / (float) height, 0.1f, 100.0f); // настраиваем трехмерную перспективу
-	glMatrixMode(GL_MODELVIEW); // переходим в трехмерный режим
+	//glMatrixMode(GL_PROJECTION);
+	//glLoadIdentity();
+	//gluPerspective(45.0f, (float) width / (float) height, 0.1f, 100.0f); // настраиваем трехмерную перспективу
+	//glMatrixMode(GL_MODELVIEW); // переходим в трехмерный режим
 
 	glEnable(GL_CULL_FACE);  // NEW! - we're doing real 3D now...  Cull (don't render) the backsides of triangles
 	glCullFace(GL_BACK);	// Other options?  GL_FRONT and GL_FRONT_AND_BACK
@@ -104,10 +103,10 @@ void SdlEngine::GameLoop()
 							orient.x -= 0.5f;
 							break;
 						case SDLK_LEFT:
-							orient.y -= 0.5f;
+							orient.y -= 0.05f;
 							break;
 						case SDLK_RIGHT:
-							orient.y += 0.5f;
+							orient.y += 0.05f;
 							break;
 					}
 					break;

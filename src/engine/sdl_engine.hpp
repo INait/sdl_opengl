@@ -10,15 +10,12 @@ class ShaderProgram;
 class SdlEngine
 {
 public:
-	friend class Model;
-
 	SdlEngine();
 	~SdlEngine();
 
 	void Init( int width, int height, const std::string & res_location);
 
 	void GameLoop();
-
 
 private:
 
@@ -33,8 +30,6 @@ private:
 
 	int width_;
 	int height_;
-
-	void CreateModel(const char* obj_file, const char* tex_file, const char* vsh_file, const char* fsh_file);
 };
 
 #endif // _WINDOW_HPP_

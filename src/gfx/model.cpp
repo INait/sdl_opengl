@@ -127,7 +127,7 @@ void Model::Draw()
 
 	GLuint positionID = glGetAttribLocation(shader_program_id_, "s_vPosition");
 	GLuint normalID = glGetAttribLocation(shader_program_id_, "s_vNormal");
-	GLuint lightID = glGetUniformLocation(shader_program_id_, "vLight");	// NEW
+	GLuint lightID = glGetUniformLocation(shader_program_id_, "vLight");
 
 	glVertexAttribPointer(positionID, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glVertexAttribPointer(normalID, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(vertices.size() * sizeof(Vec3)));
@@ -142,13 +142,18 @@ void Model::Draw()
 	// Fill the matrices with valid data
 	MatrixMath::makeScale(scaleMatrix, 0.1f, 0.1f, 0.1f);			// Fill the scaleMatrix variable
 	MatrixMath::makeRotateY(rotYMatrix, theta);						// Fill the rotYMatrix variable
-	MatrixMath::makeTranslate(transMatrix, 0.0f, 0.0f, position_.z);		// Fill the transMatrix to push the model back 1 "unit" into the scene
+	MatrixMath::makeTranslate(transMatrix, 0.0f, 0.0f, -2.0f);		// Fill the transMatrix to push the model back 1 "unit" into the scene
 	// Multiply them together 
 	MatrixMath::matrixMult4x4(tempMatrix1, rotYMatrix, scaleMatrix);	// Scale, then rotate...
 	MatrixMath::matrixMult4x4(M, transMatrix, tempMatrix1);	// ... then multiply THAT by the translate
 
 	// NEW!  Copy the rotations into the allRotsMatrix
 	MatrixMath::copyMatrix(rotYMatrix, allRotsMatrix);
+
+	// NEW! Change the (V)iew matrix if you want to "move" around the scene
+	MatrixMath::makeRotateY(rotYMatrix, orientation_.y);
+	MatrixMath::makeTranslate(transMatrix, position_.x, position_.y, position_.z);
+	MatrixMath::matrixMult4x4(V, rotYMatrix, transMatrix);
 
 	// Important! Pass that data to the shader variables
 	glUniformMatrix4fv(modelMatrixID, 1, GL_TRUE, M);
