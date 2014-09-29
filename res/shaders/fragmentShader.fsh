@@ -22,7 +22,7 @@ void main () {
 
 	// Specular component remains the same
 	float spec_intensity = pow(max(dot(N, H), 0.0), 3);
-	vec4 spec_final = spec_intensity*vec4(0.1, 0.1, 0.1, 1.0);
+	vec4 spec_final = spec_intensity*vec4(0.2, 0.2, 0.2, 1.0);
 	
 	fColor = diffuse_final + spec_final;
 }

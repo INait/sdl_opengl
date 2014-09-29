@@ -39,6 +39,8 @@ private:
 
 	GLfloat  theta;			// An amount of rotation along one axis
 	GLfloat	 scaleAmount;	// In case the object is too big or small
+
+	void GenerateSphere(float cx, float cy, float cz, float r, int p);
 public:
 
 	Model( const char * object_path );

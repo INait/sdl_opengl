@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 	SdlEngine sdl_engine;
 
 	try{
-		sdl_engine.Init(640, 480, argv[1]);
+		sdl_engine.Init(1280, 960, argv[1]);
 		sdl_engine.GameLoop();
 	}
 	catch (std::exception & exception)

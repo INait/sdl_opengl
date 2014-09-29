@@ -64,7 +64,7 @@ void SdlEngine::GameLoop()
 	bool running = true;
 
 	Vec3 orient{ 0.0, 0.0, 0.0 };
-	Vec3 pos{ 0.0, 0.0, -6.0 };
+	Vec3 pos{ 0.0, 0.0, 0.0 };
 
 	while(running)
 	{

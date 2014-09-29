@@ -10,42 +10,11 @@
 Model::Model(const char * obj_path) :
 	Object({ 0, 0, 0 }, { 0, 0, 0 })
 {
-	ObjWavefrontLoader(obj_path, vertices, uvs, normals);
+	// ObjWavefrontLoader(obj_path, vertices, uvs, normals);
+
+	GenerateSphere(0, 0, 0, 1, 200);
 
 	InitMatrices();
-
-	//
-	/*
-	vertices.push_back({ -0.5f, -0.5f, 0.0f });
-	vertices.push_back({ 0.5f, -0.5f, 0.0f });
-	vertices.push_back({ 0.0f, 0.5f, 0.0f });
-	for (int i = 0; i < vertices.size() / 3; i++)
-	{
-	colors.push_back({ 1.0f, 0.0f, 0.0f, 1.0f });
-	colors.push_back({ 0.0f, 1.0f, 0.0f, 1.0f });
-	colors.push_back({ 0.0f, 0.0f, 1.0f, 1.0f });
-	}
-
-	vertices.push_back({ -0.5f, -0.5f, 0.0f });
-	vertices.push_back({ 0.0f, -0.5f, 0.0f });
-	vertices.push_back({ -0.25f, 0.0f, 0.0f });
-	vertices.push_back({ -0.25f, 0.0f, 0.0f });
-	vertices.push_back({ 0.25f, 0.0f, 0.0f });
-	vertices.push_back({ 0.0f, 0.5f, 0.0f });
-	vertices.push_back({ 0.0f, -0.5f, 0.0f });
-	vertices.push_back({ 0.5f, -0.5f, 0.0f });
-	vertices.push_back({ 0.25f, 0.0f, 0.0f });
-
-	colors.push_back({ 1.0f, 0.00f, 0.0f, 1.0f });
-	colors.push_back({ 0.0f, 1.00f, 0.0f, 1.0f });
-	colors.push_back({ 0.0f, 0.0f, 1.0f, 1.0f });
-	colors.push_back({ 1.0f, 0.00f, 0.0f, 1.0f });
-	colors.push_back({ 0.0f, 1.00f, 0.0f, 1.0f });
-	colors.push_back({ 0.0f, 0.0f, 1.0f, 1.0f });
-	colors.push_back({ 1.0f, 0.00f, 0.0f, 1.0f });
-	colors.push_back({ 0.0f, 1.00f, 0.0f, 1.0f });
-	colors.push_back({ 0.0f, 0.0f, 1.0f, 1.0f });
-	*/
 
 	GLuint VertexArrayID;
 	glGenVertexArrays(1, &VertexArrayID);
@@ -63,6 +32,59 @@ Model::Model(const char * obj_path) :
 	glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vec3), &vertices[0]);
 	glBufferSubData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vec3), normals.size() * sizeof(Vec3), &normals[0]);
 	glBufferSubData(GL_ARRAY_BUFFER, (vertices.size() + normals.size()) * sizeof(Vec3), uvs.size() * sizeof(Vec2), &uvs[0]);
+}
+
+void Model::GenerateSphere(float cx, float cy, float cz, float r, int p)
+{
+	const float PI = 3.14159265358979f;
+	const float TWOPI = 6.28318530717958f;
+	const float PIDIV2 = 1.57079632679489f;
+
+	float theta1 = 0.0;
+	float theta2 = 0.0;
+	float phi1 = 0.0;
+
+	float ex = 0.0f;
+	float ey = 0.0f;
+	float ez = 0.0f;
+
+	float px = 0.0f;
+	float py = 0.0f;
+	float pz = 0.0f;
+
+	for (int i = 0; i < p / 2; ++i)
+	{
+		theta1 = i * TWOPI / p;
+		theta2 = (i + 1) * TWOPI / p;
+
+		for (int j = 0; j <= p; ++j)
+		{
+			phi1 = j * TWOPI / p;
+
+			// first triangle
+			ex = sinf(theta1) * sinf(phi1);
+			ez = sinf(theta1) * cosf(phi1);
+			ey = cosf(theta1);
+			px = cx + r * ex;
+			py = cy + r * ey;
+			pz = cz + r * ez;
+
+			vertices.emplace_back(Vec3{ px, py, pz });
+			normals.emplace_back(Vec3{ ex, ey, ez });
+			uvs.push_back(Vec2{ -(j / (float)p), 2 * i / (float)p });
+
+			ex = sinf(theta2) * sinf(phi1);
+			ez = sinf(theta2) * cosf(phi1);
+			ey = cosf(theta2);
+			px = cx + r * ex;
+			py = cy + r * ey;
+			pz = cz + r * ez;
+
+			vertices.emplace_back(Vec3{ px, py, pz });
+			normals.emplace_back(Vec3{ ex, ey, ez });
+			uvs.push_back(Vec2{ -(j / (float)p), 2 * (i + 1) / (float)p });
+		}
+	}
 }
 
 void Model::ActivateShaderProgram(GLuint shader_program_id)
@@ -159,5 +181,5 @@ void Model::Draw()
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glVertexPointer(3, GL_FLOAT, 0, 0);
-	glDrawArrays(GL_TRIANGLES, 0, vertices.size() );
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, vertices.size());
 }
