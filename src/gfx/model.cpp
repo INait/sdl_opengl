@@ -4,34 +4,62 @@
 #include "engine/sdl_engine.hpp"
 #include "gfx/shader_program.hpp"
 #include "utils/resource_manager.hpp"
+#include "gfx/renderer.hpp"
+#include "gfx/camera.hpp"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
-Model::Model(const char * obj_path) :
+#define POSITION_ATTRIBUTE 0
+#define NORMAL_ATTRIBUTE 2
+#define DIFFUSE_ATTRIBUTE 3
+#define SPECULAR_ATTRIBUTE 4
+#define TEXCOORD0_ATTRIBUTE 8
+#define TEXCOORD1_ATTRIBUTE 9
+#define TEXCOORD2_ATTRIBUTE 10
+
+Model::Model(const std::string& obj_path) :
 	Object({ 0, 0, 0 }, { 0, 0, 0 })
 {
-	// ObjWavefrontLoader(obj_path, vertices, uvs, normals);
+	if (obj_path.find("sphere") != -1)
+		GenerateSphere(0, 0, 0, 1, 200);
+	else if (obj_path.find("background") != -1)
+		GenerateBackground();
+	else
+		ObjWavefrontLoader(obj_path.c_str(), vertices, uvs, normals);
 
-	GenerateSphere(0, 0, 0, 1, 200);
+	rotation_ = 0;
 
-	InitMatrices();
+	glGenVertexArrays(1, &vertex_array_id_);
+	glBindVertexArray(vertex_array_id_);
 
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
-	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &vertexbuffer);
-
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glGenBuffers(3, vbos_);
+	glBindBuffer(GL_ARRAY_BUFFER, vbos_[0]);
 
 	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vec3) + normals.size() * sizeof(Vec3) + uvs.size() * sizeof(Vec2), NULL, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), vertices.data(), GL_STATIC_DRAW);
+	glVertexAttribPointer(POSITION_ATTRIBUTE, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+	glEnableVertexAttribArray(POSITION_ATTRIBUTE);
 
-	glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vec3), &vertices[0]);
-	glBufferSubData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vec3), normals.size() * sizeof(Vec3), &normals[0]);
-	glBufferSubData(GL_ARRAY_BUFFER, (vertices.size() + normals.size()) * sizeof(Vec3), uvs.size() * sizeof(Vec2), &uvs[0]);
+	// Give normals
+	glBindBuffer(GL_ARRAY_BUFFER, vbos_[1]);
+	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), normals.data(), GL_STATIC_DRAW);
+	glVertexAttribPointer(NORMAL_ATTRIBUTE, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(0));
+	glEnableVertexAttribArray(NORMAL_ATTRIBUTE);
+
+	// Give uvs
+	glBindBuffer(GL_ARRAY_BUFFER, vbos_[2]);
+	glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), uvs.data(), GL_STATIC_DRAW);
+	glVertexAttribPointer(TEXCOORD0_ATTRIBUTE, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+	glEnableVertexAttribArray(TEXCOORD0_ATTRIBUTE);
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	light_pos_ = { 1, 1, 1, 1 };
+}
+
+Model::~Model()
+{
 }
 
 void Model::GenerateSphere(float cx, float cy, float cz, float r, int p)
@@ -69,9 +97,9 @@ void Model::GenerateSphere(float cx, float cy, float cz, float r, int p)
 			py = cy + r * ey;
 			pz = cz + r * ez;
 
-			vertices.emplace_back(Vec3{ px, py, pz });
-			normals.emplace_back(Vec3{ ex, ey, ez });
-			uvs.push_back(Vec2{ -(j / (float)p), 2 * i / (float)p });
+			vertices.emplace_back(glm::vec3{ px, py, pz });
+			normals.emplace_back(glm::vec3{ ex, ey, ez });
+			uvs.push_back(glm::vec2{ -(j / (float)p), 2 * i / (float)p });
 
 			ex = sinf(theta2) * sinf(phi1);
 			ez = sinf(theta2) * cosf(phi1);
@@ -80,23 +108,51 @@ void Model::GenerateSphere(float cx, float cy, float cz, float r, int p)
 			py = cy + r * ey;
 			pz = cz + r * ez;
 
-			vertices.emplace_back(Vec3{ px, py, pz });
-			normals.emplace_back(Vec3{ ex, ey, ez });
-			uvs.push_back(Vec2{ -(j / (float)p), 2 * (i + 1) / (float)p });
+			vertices.emplace_back(glm::vec3{ px, py, pz });
+			normals.emplace_back(glm::vec3{ ex, ey, ez });
+			uvs.push_back(glm::vec2{ -(j / (float)p), 2 * (i + 1) / (float)p });
 		}
 	}
+}
+
+void Model::GenerateBackground()
+{
+	vertices.emplace_back(glm::vec3{ 0.0, 0.0, -1.0 });
+	vertices.emplace_back(glm::vec3{ 1.0, 0.0, -1.0 });
+	vertices.emplace_back(glm::vec3{ 0.0, 1.0, -1.0 });
+	vertices.emplace_back(glm::vec3{ 1.0, 1.0, -1.0 });
+
+	normals.emplace_back(glm::vec3{ 0.0, 0.0, -1.0 });
+	normals.emplace_back(glm::vec3{ 1.0, 0.0, -1.0 });
+	normals.emplace_back(glm::vec3{ 0.0, 1.0, -1.0 });
+	normals.emplace_back(glm::vec3{ 1.0, 1.0, -1.0 });
+
+	uvs.emplace_back(glm::vec2{ 0.0, 0.0 });
+	uvs.emplace_back(glm::vec2{ 1.0, 0.0 });
+	uvs.emplace_back(glm::vec2{ 0.0, 1.0 });
+	uvs.emplace_back(glm::vec2{ 1.0, 1.0 });
 }
 
 void Model::ActivateShaderProgram(GLuint shader_program_id)
 {
 	shader_program_id_ = shader_program_id;
 
-	// ============ New! glUniformLocation is how you pull IDs for uniform variables===============
-	viewMatrixID = glGetUniformLocation(shader_program_id_, "mV");
-	modelMatrixID = glGetUniformLocation(shader_program_id_, "mM");
-	allRotsMatrixID = glGetUniformLocation(shader_program_id_, "mRotations");	// NEW
-	ResourceManager::GetInstance().perspectiveMatrixID = glGetUniformLocation(shader_program_id_, "mP");
-	//=============================================================================================
+	uniformMVP = glGetUniformLocation(shader_program_id_, "ModelViewProjectionMatrix");
+	uniformModelMatrix = glGetUniformLocation(shader_program_id_, "ModelMatrix");
+	uniformEyePosW = glGetUniformLocation(shader_program_id_, "EyePosW");
+
+	// Light properties.
+	uniformLightPosW = glGetUniformLocation(shader_program_id_, "LightPosW");
+	uniformLightColor = glGetUniformLocation(shader_program_id_, "LightColor");
+
+	// Global ambient.
+	uniformAmbient = glGetUniformLocation(shader_program_id_, "Ambient");
+
+	// Material properties.
+	uniformMaterialEmissive = glGetUniformLocation(shader_program_id_, "MaterialEmissive");
+	uniformMaterialDiffuse = glGetUniformLocation(shader_program_id_, "MaterialDiffuse");
+	uniformMaterialSpecular = glGetUniformLocation(shader_program_id_, "MaterialSpecular");
+	uniformMaterialShininess = glGetUniformLocation(shader_program_id_, "MaterialShininess");
 }
 
 void Model::ApplyTexture(GLuint texture_id)
@@ -104,82 +160,39 @@ void Model::ApplyTexture(GLuint texture_id)
 	texture_id_ = texture_id;
 }
 
-void Model::InitMatrices()
-{
-	theta = 0.0f;
-	scaleAmount = 1.0f;
-
-	// Allocate memory for the matrices and initialize them to the Identity matrix
-	rotXMatrix = new GLfloat[16];	MatrixMath::makeIdentity(rotXMatrix);
-	rotYMatrix = new GLfloat[16];	MatrixMath::makeIdentity(rotYMatrix);
-	rotZMatrix = new GLfloat[16];	MatrixMath::makeIdentity(rotZMatrix);
-	transMatrix = new GLfloat[16];	MatrixMath::makeIdentity(transMatrix);
-	scaleMatrix = new GLfloat[16];	MatrixMath::makeIdentity(scaleMatrix);
-	tempMatrix1 = new GLfloat[16];	MatrixMath::makeIdentity(tempMatrix1);
-	allRotsMatrix = new GLfloat[16]; MatrixMath::makeIdentity(allRotsMatrix);
-	M = new GLfloat[16];			MatrixMath::makeIdentity(M);
-	V = new GLfloat[16];			MatrixMath::makeIdentity(V);
-}
-
-Model::~Model()
-{
-}
-
 void Model::Draw()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
-
-	GLuint positionID = glGetAttribLocation(shader_program_id_, "s_vPosition");
-	GLuint normalID = glGetAttribLocation(shader_program_id_, "s_vNormal");
-	GLuint lightID = glGetUniformLocation(shader_program_id_, "vLight");
-	GLuint texCoordID = glGetAttribLocation(shader_program_id_, "s_vTexCoord");
-
-	glVertexAttribPointer(positionID, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glVertexAttribPointer(normalID, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(vertices.size() * sizeof(Vec3)));
-	int textureCoordOffset = (vertices.size() + normals.size()) * sizeof(Vec3);
-	glVertexAttribPointer(texCoordID, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(textureCoordOffset));
-
-	glEnableVertexAttribArray(positionID);
-	glEnableVertexAttribArray(normalID);
-	glEnableVertexAttribArray(texCoordID);
-
-	GLuint texID = glGetUniformLocation(shader_program_id_, "texture");
-	glActiveTexture(GL_TEXTURE0);				// Turn on texture unit 0
-	glUniform1i(texID, 0);						// Tell "s_vTexCoord" to use the 0th texture unit
-
+	glBindVertexArray(vertex_array_id_);
+	glBindTexture(GL_TEXTURE_2D, texture_id_);
 	glUseProgram(shader_program_id_);
-	theta += 0.01f;
-	scaleAmount = sin(theta);
 
-	// Fill the matrices with valid data
-	MatrixMath::makeScale(scaleMatrix, 0.1f, 0.1f, 0.1f);			// Fill the scaleMatrix variable
-	MatrixMath::makeRotateY(rotYMatrix, theta);						// Fill the rotYMatrix variable
-	MatrixMath::makeTranslate(transMatrix, 0.0f, 0.0f, -2.0f);		// Fill the transMatrix to push the model back 1 "unit" into the scene
-	// Multiply them together 
-	MatrixMath::matrixMult4x4(tempMatrix1, rotYMatrix, scaleMatrix);	// Scale, then rotate...
-	MatrixMath::matrixMult4x4(M, transMatrix, tempMatrix1);	// ... then multiply THAT by the translate
+	const glm::vec4 white{ 1 };
+	const glm::vec4 specular_light{ 1 };
+	const glm::vec4 black{ 0 };
+	const glm::vec4 ambient{ 0.5f, 0.5f, 0.5f, 1.0f };
 
-	// NEW!  Copy the rotations into the allRotsMatrix
-	MatrixMath::copyMatrix(rotYMatrix, allRotsMatrix);
+	// Set the light position to the position of the Sun.
+	glUniform4fv(uniformLightPosW, 1, glm::value_ptr(light_pos_));
+	glUniform4fv(uniformLightColor, 1, glm::value_ptr(white));
+	glUniform4fv(uniformAmbient, 1, glm::value_ptr(ambient));
 
-	// NEW! Change the (V)iew matrix if you want to "move" around the scene
-	MatrixMath::makeRotateY(rotYMatrix, orientation_.y);
-	MatrixMath::makeTranslate(transMatrix, position_.x, position_.y, position_.z);
-	MatrixMath::matrixMult4x4(V, rotYMatrix, transMatrix);
+	glm::mat4 model_matrix = glm::rotate(orientation_.x, glm::vec3(1, 0, 0)) * 
+							 glm::rotate(orientation_.y, glm::vec3(0, 1, 0)) * 
+							 glm::scale(glm::vec3(position_.z));
+	
+	auto camera_ptr = Renderer::GetInstance().camera_ptr_;
+	glm::vec4 eyePosW = glm::vec4(camera_ptr->GetPosition(), 1);
+	glm::mat4 mvp = camera_ptr->GetProjectionMatrix() * camera_ptr->GetViewMatrix() * model_matrix;
 
-	// Important! Pass that data to the shader variables
-	glUniformMatrix4fv(modelMatrixID, 1, GL_TRUE, M);
-	glUniformMatrix4fv(viewMatrixID, 1, GL_TRUE, V);
-	glUniformMatrix4fv(ResourceManager::GetInstance().perspectiveMatrixID, 1, GL_TRUE, ResourceManager::GetInstance().P);
-	glUniformMatrix4fv(allRotsMatrixID, 1, GL_TRUE, allRotsMatrix);
+	glUniformMatrix4fv(uniformMVP, 1, GL_FALSE, glm::value_ptr(mvp));
+	glUniformMatrix4fv(uniformModelMatrix, 1, GL_FALSE, glm::value_ptr(model_matrix));
+	glUniform4fv(uniformEyePosW, 1, glm::value_ptr(eyePosW));
 
-	std::vector< Vec4 > light = ResourceManager::GetInstance().light;
+	// Material properties.
+	glUniform4fv(uniformMaterialEmissive, 1, glm::value_ptr(black));
+	glUniform4fv(uniformMaterialDiffuse, 1, glm::value_ptr(white));
+	glUniform4fv(uniformMaterialSpecular, 1, glm::value_ptr(specular_light));
+	glUniform1f(uniformMaterialShininess, 50.0f);
 
-	glUniform4fv(lightID, 1, (GLfloat *)&light[0]);
-
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	glVertexPointer(3, GL_FLOAT, 0, 0);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, vertices.size());
 }

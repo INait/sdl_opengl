@@ -16,9 +16,9 @@ struct Face
 
 void ObjWavefrontLoader(
 		const char* path,
-		std::vector< Vec3 > & vertices,
-		std::vector< Vec2 > & uvs,
-		std::vector< Vec3 > & normals
+		std::vector< glm::vec3 > & vertices,
+		std::vector< glm::vec2 > & uvs,
+		std::vector< glm::vec3 > & normals
 	)
 {
 	FILE* file = fopen( path, "r" );
@@ -26,9 +26,9 @@ void ObjWavefrontLoader(
 	if( file == NULL )
 		throw std::runtime_error("Cannot open OBJ file");
 
-	std::vector< Vec3 > v;
-	std::vector< Vec2 > vt;
-	std::vector< Vec3 > vn;
+	std::vector< glm::vec3 > v;
+	std::vector< glm::vec2 > vt;
+	std::vector< glm::vec3 > vn;
 	std::vector< Face > f;
 
 	while( 1 )
@@ -40,19 +40,19 @@ void ObjWavefrontLoader(
 
 		if( strcmp( lineHeader, "v" ) == 0 )
 		{
-			Vec3 vertex;
+			glm::vec3 vertex;
 			fscanf( file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
 			v.push_back( vertex );
 		}
 		else if( strcmp( lineHeader, "vt" ) == 0 )
 		{
-			Vec2 uv;
+			glm::vec2 uv;
 			fscanf( file, "%f %f\n", &uv.x, &uv.y );
 			vt.push_back( uv );
 		}
 		else if( strcmp( lineHeader, "vn" ) == 0 )
 		{
-			Vec3 normal;
+			glm::vec3 normal;
 			fscanf( file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
 			vn.push_back( normal );
 		}
@@ -82,17 +82,17 @@ void ObjWavefrontLoader(
 	{
 		for( std::vector< int >::const_iterator v_it = face_it->v.begin(); v_it != face_it->v.end(); ++v_it )
 		{
-			Vec3 vertex = v[ *v_it - 1 ];
+			glm::vec3 vertex = v[*v_it - 1];
 			vertices.push_back( vertex );
 		}
 		for( std::vector< int >::const_iterator vt_it = face_it->vt.begin(); vt_it != face_it->vt.end(); ++vt_it )
 		{
-			Vec2 uv = vt[ *vt_it - 1 ];
+			glm::vec2 uv = vt[*vt_it - 1];
 			uvs.push_back( uv );
 		}
 		for( std::vector< int >::const_iterator vn_it = face_it->vn.begin(); vn_it != face_it->vn.end(); ++vn_it )
 		{
-			Vec3 normal = vn[ *vn_it - 1 ];
+			glm::vec3 normal = vn[*vn_it - 1];
 			normals.push_back( normal );
 		}
 	}

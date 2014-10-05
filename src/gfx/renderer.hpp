@@ -1,14 +1,22 @@
 #ifndef _RENDERER_HPP_
 #define _RENDERER_HPP_
 
-class Renderer
+#include "utils/singleton.hpp"
+#include <memory>
+
+class Camera;
+
+class Renderer : public ISingletonable< Renderer >
 {
 public:
-	Renderer();
+	Renderer(int width, int height);
 	~Renderer();
 
 	void Draw();
+
+	std::shared_ptr< Camera > camera_ptr_;
 private:
+	
 
 };
 

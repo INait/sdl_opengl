@@ -52,7 +52,7 @@ void ResourceManager::LoadXMLResources(const std::string & res_location)
 		std::string model_path = prefix + pModelElem->Attribute("file");
 		std::string model_name = pModelElem->Attribute("name");
 
-		ModelPtr model_ptr = std::make_shared< Model >(model_path.c_str());
+		ModelPtr model_ptr = std::make_shared< Model >(model_path);
 		models_.emplace(model_name, model_ptr);
 	}
 

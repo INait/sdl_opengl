@@ -3,6 +3,7 @@
 #include "engine/sdl_engine.hpp"
 #include "utils/resource_manager.hpp"
 #include "gfx/shader_program.hpp"
+#include "gfx/renderer.hpp"
 
 SdlEngine::SdlEngine()
 {
@@ -45,10 +46,6 @@ void SdlEngine::Init( int width, int height, const std::string & res_location )
 	glClearDepth(1.0);
 	glDepthFunc(GL_LESS);
 	glShadeModel(GL_SMOOTH);
-	//glMatrixMode(GL_PROJECTION);
-	//glLoadIdentity();
-	//gluPerspective(45.0f, (float) width / (float) height, 0.1f, 100.0f); // настраиваем трехмерную перспективу
-	//glMatrixMode(GL_MODELVIEW); // переходим в трехмерный режим
 
 	glEnable(GL_CULL_FACE);  // NEW! - we're doing real 3D now...  Cull (don't render) the backsides of triangles
 	glCullFace(GL_BACK);	// Other options?  GL_FRONT and GL_FRONT_AND_BACK
@@ -57,14 +54,19 @@ void SdlEngine::Init( int width, int height, const std::string & res_location )
 	resource_manager_ = std::make_shared< ResourceManager >();
 	ResourceManager::SetInstance(*resource_manager_);
 	resource_manager_->LoadXMLResources(res_location);
+
+	renderer_ = std::make_shared< Renderer >(width_, height_);
+	Renderer::SetInstance(*renderer_);
 }
 
 void SdlEngine::GameLoop()
 {
 	bool running = true;
 
-	Vec3 orient{ 0.0, 0.0, 0.0 };
-	Vec3 pos{ 0.0, 0.0, 0.0 };
+	glm::vec3 orient{ 0.0, 0.0, 0.0 };
+	glm::vec3 pos{ 0.0, 0.0, 2.0 };
+
+	glm::vec4 lightPos{ 60, 0, 0, 1};
 
 	while(running)
 	{
@@ -108,20 +110,37 @@ void SdlEngine::GameLoop()
 						case SDLK_RIGHT:
 							orient.y += 0.05f;
 							break;
+						case SDLK_u:
+							lightPos.x += 5;
+							break;
+						case SDLK_j:
+							lightPos.x -= 5;
+							break;
+						case SDLK_i:
+							lightPos.y += 5;
+							break;
+						case SDLK_k:
+							lightPos.y -= 5;
+							break;
+						case SDLK_o:
+							lightPos.z += 5;
+							break;
+						case SDLK_l:
+							lightPos.z -= 5;
+							break;
 					}
 					break;
 			}
 		}
 
 		// Draw objects
-		for (auto & model : ResourceManager::GetInstance().models_)
-		{
-			model.second->SetOrientation(orient);
-			model.second->SetPosition(pos);
-			model.second->Draw();
-		}
+		auto sphere_it = ResourceManager::GetInstance().models_.find("sphere")->second;
+		sphere_it->SetOrientation(orient);
+		sphere_it->SetPosition(pos);
+		sphere_it->light_pos_ = lightPos;
 
-		glFlush();
+		Renderer::GetInstance().Draw();
+
 		SDL_GL_SwapWindow(window.get());
 	}
 

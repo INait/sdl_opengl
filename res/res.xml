@@ -1,18 +1,23 @@
 <?xml version="1.0"?>
 <resources>
   <objects path="res/obj/">
-    <model name="sphere" file="sphere.obj"/>
+    <model name="sphere" file="sphere"/>
+    <!--<model name="back" file="background"/>-->
   </objects>
   
   <textures path="res/textures/">
     <texture name="ball" file="ball_albedo.png"/>
+    <texture name="back" file="background.bmp"/>
   </textures>
 
   <shaders path="res/shaders/">
-    <shader name="s1" vsh_file="vertexShader.vsh" fsh_file="fragmentShader.fsh"/>
+    <!--<shader name="simple" vsh_file="simpleShader.vert" fsh_file="simpleShader.frag"/>-->
+    <shader name="diffuse" vsh_file="vertTexturedDiffuse.glsl" fsh_file="fragTexturedDiffuse.glsl"/>
+    <!--<shader name="s1" vsh_file="vertexShader.vsh" fsh_file="fragmentShader.fsh"/>-->
   </shaders>
 
   <mts_objects>
-    <mts model="sphere" texture="ball" shader="s1"/>
+    <!--<mts model="back" texture="back" shader="simple"/>-->
+    <mts model="sphere" texture="ball" shader="diffuse"/>
   </mts_objects>
 </resources>

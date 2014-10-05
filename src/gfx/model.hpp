@@ -10,49 +10,52 @@ class ShaderProgram;
 class Model : public Object
 {
 private:
-	std::vector< Vec3 > vertices;
-	std::vector< Vec2 > uvs;
-	std::vector< Vec3 > normals;
-	std::vector< Vec4 > colors;
+	std::vector< glm::vec3 > vertices;
+	std::vector< glm::vec2 > uvs;
+	std::vector< glm::vec3 > normals;
 
-	// This will identify our vertex buffer
-	GLuint vertexbuffer;
+	GLuint vertex_array_id_;	// VAO
+
+	GLuint vbos_[3];
 
 	GLuint texture_id_;
-	GLuint tex_coord_id_;
 	GLuint shader_program_id_;
 
-	GLuint viewMatrixID;
-	GLuint modelMatrixID;
-	GLuint allRotsMatrixID; //NEW
+	GLuint uniformMVP;
+	GLuint uniformModelMatrix;
+	GLuint uniformEyePosW;
 
-	GLfloat* rotXMatrix;	// Matrix for rotations about the X axis
-	GLfloat* rotYMatrix;	// Matrix for rotations about the Y axis
-	GLfloat* rotZMatrix;	// Matrix for rotations about the Z axis
-	GLfloat* transMatrix;	// Matrix for changing the position of the object
-	GLfloat* scaleMatrix;	// Duh..
-	GLfloat* tempMatrix1;	// A temporary matrix for holding intermediate multiplications
-	GLfloat* allRotsMatrix;
+	// Light properties.
+	GLuint uniformLightPosW;
+	GLuint uniformLightColor;
 
-	GLfloat* M;				// The final model matrix M to change into world coordinates
-	GLfloat* V;				// The camera matrix (for position/rotation) to change into camera coordinates
+	// Global ambient.
+	GLuint uniformAmbient;
 
-	GLfloat  theta;			// An amount of rotation along one axis
-	GLfloat	 scaleAmount;	// In case the object is too big or small
+	// Material properties.
+	GLuint uniformMaterialEmissive;
+	GLuint uniformMaterialDiffuse;
+	GLuint uniformMaterialSpecular;
+	GLuint uniformMaterialShininess;
 
 	void GenerateSphere(float cx, float cy, float cz, float r, int p);
+	void GenerateBackground();
+
+
+	float rotation_;
 public:
 
-	Model( const char * object_path );
+	Model(const std::string& obj_path);
 
 	virtual ~Model();
 
 	virtual void Draw();
-	void InitMatrices();
 
 	void ActivateShaderProgram(GLuint shader_program_id);
 
 	void ApplyTexture(GLuint texture_id);
+
+	glm::vec4 light_pos_;
 };
 
 typedef std::shared_ptr< Model > ModelPtr;

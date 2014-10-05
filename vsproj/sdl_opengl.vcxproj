@@ -39,7 +39,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\dev\Simple OpenGL Image Library\src;E:\dev\glext\include;$(SolutionDir)\..\src;E:\dev\SDL2-2.0.1\include;$(IncludePath)</IncludePath>
+    <IncludePath>E:\dev\glm;E:\dev\Simple OpenGL Image Library\src;E:\dev\glext\include;$(SolutionDir)\..\src;E:\dev\SDL2-2.0.1\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>E:\dev\Simple OpenGL Image Library\lib;E:\dev\glext\lib;E:\dev\SDL2-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
@@ -52,6 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <Cpp0xSupport>true</Cpp0xSupport>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -79,6 +80,7 @@
     <ClCompile Include="..\3rd\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="..\3rd\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="..\src\engine\sdl_engine.cpp" />
+    <ClCompile Include="..\src\gfx\camera.cpp" />
     <ClCompile Include="..\src\gfx\model.cpp" />
     <ClCompile Include="..\src\gfx\renderer.cpp" />
     <ClCompile Include="..\src\gfx\shader.cpp" />
@@ -94,6 +96,7 @@
     <ClInclude Include="..\3rd\tinyxml\tinyxml.h" />
     <ClInclude Include="..\src\defines.hpp" />
     <ClInclude Include="..\src\engine\sdl_engine.hpp" />
+    <ClInclude Include="..\src\gfx\camera.hpp" />
     <ClInclude Include="..\src\gfx\model.hpp" />
     <ClInclude Include="..\src\gfx\object.hpp" />
     <ClInclude Include="..\src\gfx\renderer.hpp" />
@@ -107,10 +110,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\shaders\fragmentShader.fsh" />
+    <None Include="..\res\shaders\simpleShader.frag" />
+    <None Include="..\res\shaders\simpleShader.vert" />
+    <None Include="..\res\shaders\fragTexturedDiffuse.glsl" />
+    <None Include="..\res\shaders\vertTexturedDiffuse.glsl" />
     <None Include="..\res\shaders\vertexShader.vsh" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\res\res.xml" />
+    <Xml Include="..\res\res_old.xml" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\res\obj\ball_albedo.png" />

@@ -6,6 +6,7 @@
 
 class ResourceManager;
 class ShaderProgram;
+class Renderer;
 
 class SdlEngine
 {
@@ -27,6 +28,7 @@ private:
 
 	std::unique_ptr< SDL_Window, SdlDeleter >		window;
 	std::shared_ptr< ResourceManager >				resource_manager_;
+	std::shared_ptr< Renderer >						renderer_;
 
 	int width_;
 	int height_;
