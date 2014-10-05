@@ -2,7 +2,6 @@
 #include "gfx/model.hpp"
 #include "gfx/texture.hpp"
 #include "gfx/shader_program.hpp"
-#include "utils/matrix_math.hpp"
 
 #include "../3rd/tinyxml/tinyxml.h"
 
@@ -10,21 +9,10 @@ DECLARE_SINGLETON_VAR( ResourceManager )
 
 ResourceManager::ResourceManager()
 {
-	InitCamera();
-
-	light.push_back({ 0.0f, 1.0f, 1.0f, 1.0f });
 }
 
 ResourceManager::~ResourceManager()
 {
-}
-
-void ResourceManager::InitCamera()
-{
-	MatrixMath::makeIdentity(P);
-
-	// Set up the (P)erspective matrix only once! Arguments are 1) the resulting matrix, 2) FoV, 3) aspect ratio, 4) near plane 5) far plane
-	MatrixMath::makePerspectiveMatrix(P, 30.0f, 1.0f, 1.0f, 1000.0f);
 }
 
 void ResourceManager::FreeResources()

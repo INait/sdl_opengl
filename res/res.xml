@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <resources>
   <objects path="res/obj/">
-    <model name="sphere" file="sphere"/>
-    <!--<model name="back" file="background"/>-->
+    <model name="m2_sphere" file="sphere"/>
+    <model name="m1_back" file="background"/>
   </objects>
   
   <textures path="res/textures/">
@@ -11,13 +11,12 @@
   </textures>
 
   <shaders path="res/shaders/">
-    <!--<shader name="simple" vsh_file="simpleShader.vert" fsh_file="simpleShader.frag"/>-->
-    <shader name="diffuse" vsh_file="vertTexturedDiffuse.glsl" fsh_file="fragTexturedDiffuse.glsl"/>
-    <!--<shader name="s1" vsh_file="vertexShader.vsh" fsh_file="fragmentShader.fsh"/>-->
+    <shader name="background" vsh_file="backgroundShader.vert" fsh_file="backgroundShader.frag"/>
+    <shader name="diffuse" vsh_file="texturedDiffuse.vert" fsh_file="texturedDiffuse.frag"/>
   </shaders>
 
   <mts_objects>
-    <!--<mts model="back" texture="back" shader="simple"/>-->
-    <mts model="sphere" texture="ball" shader="diffuse"/>
+    <mts model="m1_back" texture="back" shader="background"/>
+    <mts model="m2_sphere" texture="ball" shader="diffuse"/>
   </mts_objects>
 </resources>

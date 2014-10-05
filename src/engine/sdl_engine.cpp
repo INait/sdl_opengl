@@ -134,7 +134,7 @@ void SdlEngine::GameLoop()
 		}
 
 		// Draw objects
-		auto sphere_it = ResourceManager::GetInstance().models_.find("sphere")->second;
+		auto sphere_it = ResourceManager::GetInstance().models_.find("m2_sphere")->second;
 		sphere_it->SetOrientation(orient);
 		sphere_it->SetPosition(pos);
 		sphere_it->light_pos_ = lightPos;

@@ -1,6 +1,5 @@
 #include "gfx/model.hpp"
 #include "defines.hpp"
-#include "utils/matrix_math.hpp"
 #include "engine/sdl_engine.hpp"
 #include "gfx/shader_program.hpp"
 #include "utils/resource_manager.hpp"

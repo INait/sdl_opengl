@@ -87,7 +87,6 @@
     <ClCompile Include="..\src\gfx\shader_program.cpp" />
     <ClCompile Include="..\src\gfx\texture.cpp" />
     <ClCompile Include="..\src\main.cpp" />
-    <ClCompile Include="..\src\utils\matrix_math.cpp" />
     <ClCompile Include="..\src\utils\resource_manager.cpp" />
     <ClCompile Include="..\src\wavefront_loader\wavefront_loader.cpp" />
   </ItemGroup>
@@ -103,18 +102,17 @@
     <ClInclude Include="..\src\gfx\shader.hpp" />
     <ClInclude Include="..\src\gfx\shader_program.hpp" />
     <ClInclude Include="..\src\gfx\texture.hpp" />
-    <ClInclude Include="..\src\utils\matrix_math.hpp" />
     <ClInclude Include="..\src\utils\resource_manager.hpp" />
     <ClInclude Include="..\src\utils\singleton.hpp" />
     <ClInclude Include="..\src\wavefront_loader\wavefront_loader.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\res\shaders\fragmentShader.fsh" />
+    <None Include="..\res\shaders\backgroundShader.frag" />
     <None Include="..\res\shaders\simpleShader.frag" />
     <None Include="..\res\shaders\simpleShader.vert" />
-    <None Include="..\res\shaders\fragTexturedDiffuse.glsl" />
-    <None Include="..\res\shaders\vertTexturedDiffuse.glsl" />
-    <None Include="..\res\shaders\vertexShader.vsh" />
+    <None Include="..\res\shaders\texturedDiffuse.frag" />
+    <None Include="..\res\shaders\texturedDiffuse.vert" />
+    <None Include="..\res\shaders\backgroundShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\res\res.xml" />

@@ -26,15 +26,7 @@ public:
 		std::string s;  // shader_program_id
 	};
 
-
-	GLuint perspectiveMatrixID;
-	GLfloat P[16];				// The perspective matrix for the camera (to give the scene depth); initialize this ONLY ONCE!
-
-	void InitCamera();
-	
 	void FreeResources();
-
-	std::vector< glm::vec4 > light;
 
 	std::map< std::string /* model_id */, ModelPtr >				models_;
 

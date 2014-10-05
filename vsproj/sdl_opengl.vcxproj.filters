@@ -54,9 +54,6 @@
     <ClCompile Include="..\src\gfx\shader_program.cpp">
       <Filter>src\gfx</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\utils\matrix_math.cpp">
-      <Filter>src\utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\wavefront_loader\wavefront_loader.cpp">
       <Filter>src\wavefront_loader</Filter>
     </ClCompile>
@@ -98,9 +95,6 @@
     <ClInclude Include="..\src\gfx\shader_program.hpp">
       <Filter>src\gfx</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\utils\matrix_math.hpp">
-      <Filter>src\utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\wavefront_loader\wavefront_loader.hpp">
       <Filter>src\wavefront_loader</Filter>
     </ClInclude>
@@ -127,22 +121,22 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\res\shaders\fragmentShader.fsh">
-      <Filter>res\shaders</Filter>
-    </None>
-    <None Include="..\res\shaders\vertexShader.vsh">
-      <Filter>res\shaders</Filter>
-    </None>
     <None Include="..\res\shaders\simpleShader.frag">
       <Filter>res\shaders</Filter>
     </None>
     <None Include="..\res\shaders\simpleShader.vert">
       <Filter>res\shaders</Filter>
     </None>
-    <None Include="..\res\shaders\vertTexturedDiffuse.glsl">
+    <None Include="..\res\shaders\backgroundShader.vert">
       <Filter>res\shaders</Filter>
     </None>
-    <None Include="..\res\shaders\fragTexturedDiffuse.glsl">
+    <None Include="..\res\shaders\backgroundShader.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\res\shaders\texturedDiffuse.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\res\shaders\texturedDiffuse.vert">
       <Filter>res\shaders</Filter>
     </None>
   </ItemGroup>
