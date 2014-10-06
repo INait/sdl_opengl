@@ -19,9 +19,9 @@
 Model::Model(const std::string& obj_path) :
 	Object({ 0, 0, 0 }, { 0, 0, 0 })
 {
-	if (obj_path.find("sphere") != -1)
+	if (obj_path.find("sphere") != std::string::npos)
 		GenerateSphere(0, 0, 0, 1, 200);
-	else if (obj_path.find("background") != -1)
+	else if (obj_path.find("background") != std::string::npos)
 		GenerateBackground();
 	else
 		ObjWavefrontLoader(obj_path.c_str(), vertices, uvs, normals);
@@ -63,9 +63,7 @@ Model::~Model()
 
 void Model::GenerateSphere(float cx, float cy, float cz, float r, int p)
 {
-	const float PI = 3.14159265358979f;
 	const float TWOPI = 6.28318530717958f;
-	const float PIDIV2 = 1.57079632679489f;
 
 	float theta1 = 0.0;
 	float theta2 = 0.0;
@@ -175,10 +173,10 @@ void Model::Draw()
 	glUniform4fv(uniformLightColor, 1, glm::value_ptr(white));
 	glUniform4fv(uniformAmbient, 1, glm::value_ptr(ambient));
 
-	glm::mat4 model_matrix = glm::rotate(orientation_.x, glm::vec3(1, 0, 0)) * 
-							 glm::rotate(orientation_.y, glm::vec3(0, 1, 0)) * 
+	glm::mat4 model_matrix = glm::rotate(orientation_.x, glm::vec3(1, 0, 0)) *
+							 glm::rotate(orientation_.y, glm::vec3(0, 1, 0)) *
 							 glm::scale(glm::vec3(position_.z));
-	
+
 	auto camera_ptr = Renderer::GetInstance().camera_ptr_;
 	glm::vec4 eyePosW = glm::vec4(camera_ptr->GetPosition(), 1);
 	glm::mat4 mvp = camera_ptr->GetProjectionMatrix() * camera_ptr->GetViewMatrix() * model_matrix;

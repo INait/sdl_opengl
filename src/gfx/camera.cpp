@@ -4,8 +4,8 @@ Camera::Camera()
 	: m_Viewport(0)
 	, m_Position(0)
 	, m_Rotation()
-	, m_ProjectionMatrix(1)
 	, m_ViewMatrix(1)
+	, m_ProjectionMatrix(1)
 	, m_ViewDirty(false)
 {}
 
@@ -13,8 +13,8 @@ Camera::Camera(int screenWidth, int screenHeight)
 	: m_Viewport(0, 0, screenWidth, screenHeight)
 	, m_Position(0)
 	, m_Rotation()
-	, m_ProjectionMatrix(1)
 	, m_ViewMatrix(1)
+	, m_ProjectionMatrix(1)
 	, m_ViewDirty(false)
 {
 
