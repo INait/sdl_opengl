@@ -1,4 +1,4 @@
-#include "gfx/model.hpp"
+#include "models/billiard_ball.hpp"
 #include "defines.hpp"
 #include "engine/sdl_engine.hpp"
 #include "gfx/shader_program.hpp"
@@ -16,15 +16,13 @@
 #define TEXCOORD1_ATTRIBUTE 9
 #define TEXCOORD2_ATTRIBUTE 10
 
-Model::Model(const std::string& obj_path) :
-	Object({ 0, 0, 0 }, { 0, 0, 0 })
+BilliardBall::BilliardBall() :
+	Mesh({ 0, 0, 0 }, { 0, 0, 0 })
 {
-	if (obj_path.find("sphere") != std::string::npos)
-		GenerateSphere(0, 0, 0, 1, 200);
-	else if (obj_path.find("background") != std::string::npos)
-		GenerateBackground();
-	else
-		ObjWavefrontLoader(obj_path.c_str(), vertices, uvs, normals);
+	GenerateSphere(0, 0, 0, 1, 200);
+
+	// loader for obj files	
+	//	ObjWavefrontLoader(obj_path.c_str(), vertices, uvs, normals);
 
 	rotation_ = 0;
 
@@ -53,15 +51,13 @@ Model::Model(const std::string& obj_path) :
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	light_pos_ = { 1, 1, 1, 1 };
 }
 
-Model::~Model()
+BilliardBall::~BilliardBall()
 {
 }
 
-void Model::GenerateSphere(float cx, float cy, float cz, float r, int p)
+void BilliardBall::GenerateSphere(float cx, float cy, float cz, float r, int p)
 {
 	const float TWOPI = 6.28318530717958f;
 
@@ -112,25 +108,7 @@ void Model::GenerateSphere(float cx, float cy, float cz, float r, int p)
 	}
 }
 
-void Model::GenerateBackground()
-{
-	vertices.emplace_back(glm::vec3{ 0.0, 0.0, -1.0 });
-	vertices.emplace_back(glm::vec3{ 1.0, 0.0, -1.0 });
-	vertices.emplace_back(glm::vec3{ 0.0, 1.0, -1.0 });
-	vertices.emplace_back(glm::vec3{ 1.0, 1.0, -1.0 });
-
-	normals.emplace_back(glm::vec3{ 0.0, 0.0, -1.0 });
-	normals.emplace_back(glm::vec3{ 1.0, 0.0, -1.0 });
-	normals.emplace_back(glm::vec3{ 0.0, 1.0, -1.0 });
-	normals.emplace_back(glm::vec3{ 1.0, 1.0, -1.0 });
-
-	uvs.emplace_back(glm::vec2{ 0.0, 0.0 });
-	uvs.emplace_back(glm::vec2{ 1.0, 0.0 });
-	uvs.emplace_back(glm::vec2{ 0.0, 1.0 });
-	uvs.emplace_back(glm::vec2{ 1.0, 1.0 });
-}
-
-void Model::ActivateShaderProgram(GLuint shader_program_id)
+void BilliardBall::ApplyShaderProgram(GLuint shader_program_id)
 {
 	shader_program_id_ = shader_program_id;
 
@@ -152,12 +130,7 @@ void Model::ActivateShaderProgram(GLuint shader_program_id)
 	uniformMaterialShininess = glGetUniformLocation(shader_program_id_, "MaterialShininess");
 }
 
-void Model::ApplyTexture(GLuint texture_id)
-{
-	texture_id_ = texture_id;
-}
-
-void Model::Draw()
+void BilliardBall::Draw()
 {
 	glBindVertexArray(vertex_array_id_);
 	glBindTexture(GL_TEXTURE_2D, texture_id_);
@@ -169,7 +142,7 @@ void Model::Draw()
 	const glm::vec4 ambient{ 0.5f, 0.5f, 0.5f, 1.0f };
 
 	// Set the light position to the position of the Sun.
-	glUniform4fv(uniformLightPosW, 1, glm::value_ptr(light_pos_));
+	glUniform4fv(uniformLightPosW, 1, glm::value_ptr(Renderer::GetInstance().light_pos_));
 	glUniform4fv(uniformLightColor, 1, glm::value_ptr(white));
 	glUniform4fv(uniformAmbient, 1, glm::value_ptr(ambient));
 

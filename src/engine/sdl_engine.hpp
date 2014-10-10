@@ -2,7 +2,7 @@
 #define _WINDOW_HPP_
 
 #include "defines.hpp"
-#include "gfx/model.hpp"
+#include "models/mesh.hpp"
 
 class ResourceManager;
 class ShaderProgram;

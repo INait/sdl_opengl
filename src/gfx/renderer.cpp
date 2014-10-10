@@ -13,6 +13,8 @@ Renderer::Renderer(int width, int height)
 
 	camera_ptr_->SetPosition(glm::vec3{ 0, 0, 100 });
 	camera_ptr_->SetRotation(glm::quat{});
+
+	light_pos_ = { 1, 1, 1, 1 };
 }
 
 Renderer::~Renderer()

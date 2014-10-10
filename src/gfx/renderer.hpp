@@ -1,6 +1,7 @@
 #ifndef _RENDERER_HPP_
 #define _RENDERER_HPP_
 
+#include "defines.hpp"
 #include "utils/singleton.hpp"
 #include <memory>
 
@@ -15,6 +16,8 @@ public:
 	void Draw();
 
 	std::shared_ptr< Camera > camera_ptr_;
+
+	glm::vec4 light_pos_;
 private:
 	
 

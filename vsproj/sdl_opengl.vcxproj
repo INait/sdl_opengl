@@ -39,10 +39,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\dev\glm;E:\dev\Simple OpenGL Image Library\src;E:\dev\glext\include;$(SolutionDir)\..\src;E:\dev\SDL2-2.0.1\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\dev\glm;D:\dev\Simple OpenGL Image Library\src;D:\dev\glext\include;$(SolutionDir)\..\src;D:\dev\SDL2-2.0.1\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>E:\dev\Simple OpenGL Image Library\lib;E:\dev\glext\lib;E:\dev\SDL2-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>D:\dev\Simple OpenGL Image Library\lib;D:\dev\glext\lib;D:\dev\SDL2-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\..\obj\$(Configuration)\</IntDir>
@@ -81,12 +81,13 @@
     <ClCompile Include="..\3rd\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="..\src\engine\sdl_engine.cpp" />
     <ClCompile Include="..\src\gfx\camera.cpp" />
-    <ClCompile Include="..\src\gfx\model.cpp" />
     <ClCompile Include="..\src\gfx\renderer.cpp" />
     <ClCompile Include="..\src\gfx\shader.cpp" />
     <ClCompile Include="..\src\gfx\shader_program.cpp" />
     <ClCompile Include="..\src\gfx\texture.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\models\background.cpp" />
+    <ClCompile Include="..\src\models\billiard_ball.cpp" />
     <ClCompile Include="..\src\utils\resource_manager.cpp" />
     <ClCompile Include="..\src\wavefront_loader\wavefront_loader.cpp" />
   </ItemGroup>
@@ -96,12 +97,13 @@
     <ClInclude Include="..\src\defines.hpp" />
     <ClInclude Include="..\src\engine\sdl_engine.hpp" />
     <ClInclude Include="..\src\gfx\camera.hpp" />
-    <ClInclude Include="..\src\gfx\model.hpp" />
-    <ClInclude Include="..\src\gfx\object.hpp" />
     <ClInclude Include="..\src\gfx\renderer.hpp" />
     <ClInclude Include="..\src\gfx\shader.hpp" />
     <ClInclude Include="..\src\gfx\shader_program.hpp" />
     <ClInclude Include="..\src\gfx\texture.hpp" />
+    <ClInclude Include="..\src\models\background.hpp" />
+    <ClInclude Include="..\src\models\billiard_ball.hpp" />
+    <ClInclude Include="..\src\models\mesh.hpp" />
     <ClInclude Include="..\src\utils\resource_manager.hpp" />
     <ClInclude Include="..\src\utils\singleton.hpp" />
     <ClInclude Include="..\src\wavefront_loader\wavefront_loader.hpp" />

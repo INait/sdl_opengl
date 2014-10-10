@@ -31,6 +31,9 @@
     <Filter Include="res\obj">
       <UniqueIdentifier>{ae6ca9ca-6700-49a7-b41b-0e1a773faa5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\models">
+      <UniqueIdentifier>{5b59f7dd-0c5e-4edd-aaec-b1742cba2c8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rd\tinyxml\tinystr.cpp">
@@ -63,9 +66,6 @@
     <ClCompile Include="..\src\utils\resource_manager.cpp">
       <Filter>src\utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\gfx\model.cpp">
-      <Filter>src\gfx</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\gfx\renderer.cpp">
       <Filter>src\gfx</Filter>
     </ClCompile>
@@ -74,6 +74,12 @@
     </ClCompile>
     <ClCompile Include="..\src\gfx\camera.cpp">
       <Filter>src\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\models\billiard_ball.cpp">
+      <Filter>src\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\models\background.cpp">
+      <Filter>src\models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,9 +91,6 @@
     </ClInclude>
     <ClInclude Include="..\src\engine\sdl_engine.hpp">
       <Filter>src\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\gfx\object.hpp">
-      <Filter>src\gfx</Filter>
     </ClInclude>
     <ClInclude Include="..\src\gfx\shader.hpp">
       <Filter>src\gfx</Filter>
@@ -104,9 +107,6 @@
     <ClInclude Include="..\src\utils\resource_manager.hpp">
       <Filter>src\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\gfx\model.hpp">
-      <Filter>src\gfx</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\gfx\renderer.hpp">
       <Filter>src\gfx</Filter>
     </ClInclude>
@@ -118,6 +118,15 @@
     </ClInclude>
     <ClInclude Include="..\src\gfx\camera.hpp">
       <Filter>src\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\models\mesh.hpp">
+      <Filter>src\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\models\billiard_ball.hpp">
+      <Filter>src\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\models\background.hpp">
+      <Filter>src\models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

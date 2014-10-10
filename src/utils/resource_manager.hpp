@@ -7,7 +7,7 @@
 
 #include "utils/singleton.hpp"
 
-#include "gfx/model.hpp"
+#include "models/mesh.hpp"
 #include "gfx/texture.hpp"
 #include "gfx/shader_program.hpp"
 
@@ -28,7 +28,7 @@ public:
 
 	void FreeResources();
 
-	std::map< std::string /* model_id */, ModelPtr >				models_;
+	std::map< std::string /* model_id */, MeshPtr >					models_;
 
 private:
 	std::map< std::string /* texture_id */, TexturePtr >			textures_;

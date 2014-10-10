@@ -29,8 +29,6 @@ void SdlEngine::Init( int width, int height, const std::string & res_location )
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 6);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
 
-	// Создаем окно с заголовком "Cube", размером 640х480 и расположенным по центру экрана.
-
 	window.reset( SDL_CreateWindow("Sphere", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width_, height_, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL) );
 
 	if (window.get() == NULL) // если не получилось создать окно, то выходим
@@ -137,8 +135,8 @@ void SdlEngine::GameLoop()
 		auto sphere_it = ResourceManager::GetInstance().models_.find("m2_sphere")->second;
 		sphere_it->SetOrientation(orient);
 		sphere_it->SetPosition(pos);
-		sphere_it->light_pos_ = lightPos;
 
+		Renderer::GetInstance().light_pos_ = lightPos;
 		Renderer::GetInstance().Draw();
 
 		SDL_GL_SwapWindow(window.get());

@@ -1,5 +1,7 @@
 #include "utils/resource_manager.hpp"
-#include "gfx/model.hpp"
+#include "models/mesh.hpp"
+#include "models/billiard_ball.hpp"
+#include "models/background.hpp"
 #include "gfx/texture.hpp"
 #include "gfx/shader_program.hpp"
 
@@ -40,8 +42,15 @@ void ResourceManager::LoadXMLResources(const std::string & res_location)
 		std::string model_path = prefix + pModelElem->Attribute("file");
 		std::string model_name = pModelElem->Attribute("name");
 
-		ModelPtr model_ptr = std::make_shared< Model >(model_path);
-		models_.emplace(model_name, model_ptr);
+		MeshPtr mesh_ptr;
+		if (model_path.find("sphere") != std::string::npos)
+			mesh_ptr = std::make_shared< BilliardBall >();
+		else if ( model_path.find("back") != std::string::npos)
+			mesh_ptr = std::make_shared< Background >();
+		else
+			throw std::runtime_error("Model not supported");
+
+		models_.emplace(model_name, mesh_ptr);
 	}
 
 	// Fill textures
@@ -82,7 +91,7 @@ void ResourceManager::LoadXMLResources(const std::string & res_location)
 
 		auto model_it = models_.find(mts.m);
 
-		model_it->second->ActivateShaderProgram(shader_programs_.find(mts.s)->second->GetID());
+		model_it->second->ApplyShaderProgram(shader_programs_.find(mts.s)->second->GetID());
 		model_it->second->ApplyTexture(textures_.find(mts.t)->second->GetID());
 	}
 }
