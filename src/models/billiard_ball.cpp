@@ -6,16 +6,6 @@
 #include "gfx/renderer.hpp"
 #include "gfx/camera.hpp"
 
-#define BUFFER_OFFSET(i) ((char *)NULL + (i))
-
-#define POSITION_ATTRIBUTE 0
-#define NORMAL_ATTRIBUTE 2
-#define DIFFUSE_ATTRIBUTE 3
-#define SPECULAR_ATTRIBUTE 4
-#define TEXCOORD0_ATTRIBUTE 8
-#define TEXCOORD1_ATTRIBUTE 9
-#define TEXCOORD2_ATTRIBUTE 10
-
 BilliardBall::BilliardBall() :
 	Mesh({ 0, 0, 0 }, { 0, 0, 0 })
 {
