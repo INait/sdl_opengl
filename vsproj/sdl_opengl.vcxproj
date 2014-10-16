@@ -39,11 +39,17 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\dev\glm;D:\dev\Simple OpenGL Image Library\src;D:\dev\glext\include;$(SolutionDir)\..\src;D:\dev\SDL2-2.0.1\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\..\..\3rd_party_libs\glm;$(ProjectDir)\..\..\3rd_party_libs\SOIL\src;$(ProjectDir)\..\..\3rd_party_libs\glext\include;$(SolutionDir)\..\src;$(ProjectDir)\..\..\3rd_party_libs\SDL2-2.0.1\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>D:\dev\Simple OpenGL Image Library\lib;D:\dev\glext\lib;D:\dev\SDL2-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\..\..\3rd_party_libs\SOIL\lib;$(ProjectDir)\..\..\3rd_party_libs\glext\lib;$(ProjectDir)\..\..\3rd_party_libs\SDL2-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\..\build\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\..\obj\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir)\..\..\3rd_party_libs\glm;$(ProjectDir)\..\..\3rd_party_libs\SOIL\src;$(ProjectDir)\..\..\3rd_party_libs\glext\include;$(SolutionDir)\..\src;$(ProjectDir)\..\..\3rd_party_libs\SDL2-2.0.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(ProjectDir)\..\..\3rd_party_libs\SOIL\lib;$(ProjectDir)\..\..\3rd_party_libs\glext\lib;$(ProjectDir)\..\..\3rd_party_libs\SDL2-2.0.1\lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
     <OutDir>$(SolutionDir)\..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\..\obj\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -72,6 +78,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>sdl2.lib;soil.lib;opengl32.lib;glu32.lib;glext.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -118,7 +125,6 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\res\res.xml" />
-    <Xml Include="..\res\res_old.xml" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\res\obj\ball_albedo.png" />
@@ -126,6 +132,7 @@
   <ItemGroup>
     <Object Include="..\res\obj\sphere.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </Object>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

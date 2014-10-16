@@ -35,7 +35,7 @@ protected:
 	std::vector< glm::vec2 > uvs;
 	std::vector< glm::vec3 > normals;
 
-	GLuint vertex_array_id_;	// VAO
+	GLuint vertex_array_id_;
 
 	GLuint vbos_[3];
 

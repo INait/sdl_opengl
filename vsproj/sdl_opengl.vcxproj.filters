@@ -153,9 +153,6 @@
     <Xml Include="..\res\res.xml">
       <Filter>res</Filter>
     </Xml>
-    <Xml Include="..\res\res_old.xml">
-      <Filter>res</Filter>
-    </Xml>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\res\obj\ball_albedo.png">

@@ -131,7 +131,7 @@ void BilliardBall::Draw()
 	const glm::vec4 black{ 0 };
 	const glm::vec4 ambient{ 0.5f, 0.5f, 0.5f, 1.0f };
 
-	// Set the light position to the position of the Sun.
+	// Set the light position
 	glUniform4fv(uniformLightPosW, 1, glm::value_ptr(Renderer::GetInstance().light_pos_));
 	glUniform4fv(uniformLightColor, 1, glm::value_ptr(white));
 	glUniform4fv(uniformAmbient, 1, glm::value_ptr(ambient));

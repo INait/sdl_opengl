@@ -13,7 +13,6 @@ Shader::~Shader()
 {
 }
 
-// FIXME: rewrite to use C++ vector instead of char*
 void Shader::ShaderLog()
 {
 	int   infologLen = 0;

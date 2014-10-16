@@ -1,1 +1,1 @@
-build\Debug\sdl_opengl.exe res\res.xml
+build\Release\sdl_opengl.exe res\res.xml

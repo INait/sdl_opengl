@@ -15,14 +15,11 @@ SdlEngine::~SdlEngine()
 
 void SdlEngine::Init( int width, int height, const std::string & res_location )
 {
-	// Инициализация SDL
 	width_ = width;
 	height_ = height;
 
 	if ( SDL_Init(SDL_INIT_VIDEO) < 0 )
 		throw std::runtime_error(SDL_GetError());
-
-	// Включаем двойной буфер, настраиваем цвета
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
@@ -31,23 +28,22 @@ void SdlEngine::Init( int width, int height, const std::string & res_location )
 
 	window.reset( SDL_CreateWindow("Sphere", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width_, height_, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL) );
 
-	if (window.get() == NULL) // если не получилось создать окно, то выходим
+	if (window.get() == NULL)
 		throw std::runtime_error("Couldn't create sdl window");
 
-	SDL_GLContext glcontext = SDL_GL_CreateContext(window.get()); // создаем контекст OpenGL
+	SDL_GLContext glcontext = SDL_GL_CreateContext(window.get());
 
-	if (glcontext == NULL) // если не получилось создать окно, то выходим
+	if (glcontext == NULL)
 		throw std::runtime_error("Couldn't create sdl GL context");
 
-	// Инициализация OpenGL
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // устанавливаем фоновый цвет на черный
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClearDepth(1.0);
 	glDepthFunc(GL_LESS);
 	glShadeModel(GL_SMOOTH);
 
-	glEnable(GL_CULL_FACE);  // NEW! - we're doing real 3D now...  Cull (don't render) the backsides of triangles
-	glCullFace(GL_BACK);	// Other options?  GL_FRONT and GL_FRONT_AND_BACK
-	glEnable(GL_DEPTH_TEST);// Make sure the depth buffer is on.  As you draw a pixel, update the screen only if it's closer than previus ones
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glEnable(GL_DEPTH_TEST);
 
 	resource_manager_ = std::make_shared< ResourceManager >();
 	ResourceManager::SetInstance(*resource_manager_);

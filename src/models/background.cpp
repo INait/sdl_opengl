@@ -38,14 +38,14 @@ Background::~Background()
 
 void Background::GenerateBackground()
 {
-	vertices.emplace_back(glm::vec3{ 0.0, 0.0, -1.0 });
-	vertices.emplace_back(glm::vec3{ 1.0, 0.0, -1.0 });
-	vertices.emplace_back(glm::vec3{ 0.0, 1.0, -1.0 });
+	vertices.emplace_back(glm::vec3{ -1.0, -1.0, -1.0 });
+	vertices.emplace_back(glm::vec3{ 1.0, -1.0, -1.0 });
+	vertices.emplace_back(glm::vec3{ -1.0, 1.0, -1.0 });
 	vertices.emplace_back(glm::vec3{ 1.0, 1.0, -1.0 });
 
-	normals.emplace_back(glm::vec3{ 0.0, 0.0, -1.0 });
-	normals.emplace_back(glm::vec3{ 1.0, 0.0, -1.0 });
-	normals.emplace_back(glm::vec3{ 0.0, 1.0, -1.0 });
+	normals.emplace_back(glm::vec3{ -1.0, -1.0, -1.0 });
+	normals.emplace_back(glm::vec3{ 1.0, -1.0, -1.0 });
+	normals.emplace_back(glm::vec3{ -1.0, 1.0, -1.0 });
 	normals.emplace_back(glm::vec3{ 1.0, 1.0, -1.0 });
 
 	uvs.emplace_back(glm::vec2{ 0.0, 0.0 });
@@ -56,6 +56,9 @@ void Background::GenerateBackground()
 
 void Background::Draw()
 {
+	// FIXME: background currently disabled
+	return;
+
 	glBindVertexArray(vertex_array_id_);
 	glBindTexture(GL_TEXTURE_2D, texture_id_);
 	glUseProgram(shader_program_id_);
