@@ -35,6 +35,7 @@ FILE(GLOB PROJ_SRC src/*.cpp
 				   src/engine/*.cpp
 				   src/gfx/*.cpp
 				   src/utils/*.cpp
+				   src/models/*.cpp
 	)
 FILE(GLOB 3RD_SRC 3rd/tinyxml/*.cpp )
 ADD_EXECUTABLE( build/sdl_opengl ${PROJ_SRC} ${3RD_SRC} )
