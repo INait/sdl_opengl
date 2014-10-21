@@ -136,7 +136,8 @@ void BilliardBall::Draw()
 	glUniform4fv(uniformLightColor, 1, glm::value_ptr(white));
 	glUniform4fv(uniformAmbient, 1, glm::value_ptr(ambient));
 
-	glm::mat4 model_matrix = glm::rotate(orientation_.x, glm::vec3(1, 0, 0)) *
+	glm::mat4 model_matrix = glm::translate(glm::vec3(position_.x, position_.y, 0)) *
+							 glm::rotate(orientation_.x, glm::vec3(1, 0, 0)) *
 							 glm::rotate(orientation_.y, glm::vec3(0, 1, 0)) *
 							 glm::scale(glm::vec3(position_.z));
 

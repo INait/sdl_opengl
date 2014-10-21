@@ -92,6 +92,12 @@ void SdlEngine::GameLoop()
 						case SDLK_d:
 							pos.x += 0.1f;
 							break;
+						case SDLK_q:
+							pos.y -= 0.1f;
+							break;
+						case SDLK_e:
+							pos.y += 0.1f;
+							break;
 						case SDLK_UP:
 							orient.x += 0.5f;
 							break;

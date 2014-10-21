@@ -12,9 +12,12 @@ public:
 
 	virtual void Draw();
 
+	virtual void ApplyShaderProgram(GLuint shader_program_id);
 private:
 
 	void GenerateBackground();
+
+	GLuint uniformMVP;
 };
 
 #endif // _BACKGROUND_HPP_

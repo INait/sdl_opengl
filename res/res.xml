@@ -6,8 +6,7 @@
   </objects>
   
   <textures path="res/textures/">
-    <!--<texture name="ball" file="ball_albedo.png"/>-->
-    <texture name="ball" file="Texture-Earth.jpg"/>
+    <texture name="ball" file="ball_albedo.png"/>
     <texture name="back" file="background.bmp"/>
   </textures>
 
