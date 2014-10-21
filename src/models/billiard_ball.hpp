@@ -31,6 +31,7 @@ private:
 	void GenerateBackground();
 
 	float rotation_;
+
 public:
 
 	BilliardBall();

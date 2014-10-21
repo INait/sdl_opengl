@@ -85,6 +85,7 @@ void ResourceManager::LoadXMLResources(const std::string & res_location)
 		MTS_mapping mts;
 		mts.m = pMTSElem->Attribute("model");
 		mts.t = pMTSElem->Attribute("texture");
+		auto refl = pMTSElem->Attribute("texture");
 		mts.s = pMTSElem->Attribute("shader");
 
 		mts_mapping_.emplace_back(mts);
@@ -93,5 +94,8 @@ void ResourceManager::LoadXMLResources(const std::string & res_location)
 
 		model_it->second->ApplyShaderProgram(shader_programs_.find(mts.s)->second->GetID());
 		model_it->second->ApplyTexture(textures_.find(mts.t)->second->GetID());
+
+		if (refl)
+			model_it->second->ApplyReflTexture(textures_.find(refl)->second->GetID());
 	}
 }

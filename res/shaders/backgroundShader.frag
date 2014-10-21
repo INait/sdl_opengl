@@ -1,8 +1,8 @@
-#version 330
+#version 420
 
 in vec2 v2f_texcoord;
 
-uniform sampler2D imageSampler;
+layout (binding=0) uniform sampler2D imageSampler;
 
 layout (location=0) out vec4 out_color;
 

@@ -1,4 +1,4 @@
-#version 330 core
+#version 420 core
 
 in vec4 v2f_positionW; // Position in world space.
 in vec4 v2f_normalW; // Surface normal in world space.
@@ -15,7 +15,7 @@ uniform float MaterialShininess;
 
 uniform vec4 Ambient; // Global ambient contribution.
 
-uniform sampler2D diffuseSampler;
+layout (binding=0) uniform sampler2D diffuseSampler;
 
 layout (location=0) out vec4 out_color;
 

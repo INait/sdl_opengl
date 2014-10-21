@@ -123,7 +123,12 @@ void BilliardBall::ApplyShaderProgram(GLuint shader_program_id)
 void BilliardBall::Draw()
 {
 	glBindVertexArray(vertex_array_id_);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture_id_);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, reflection_texture_id_);
+
 	glUseProgram(shader_program_id_);
 
 	const glm::vec4 white{ 1 };

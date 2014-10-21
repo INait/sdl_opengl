@@ -23,6 +23,7 @@ public:
 	virtual void SetOrientation(const glm::vec3 & orient) { orientation_ = orient; }
 
 	virtual void ApplyTexture(GLuint texture_id) { texture_id_ = texture_id; }
+	virtual void ApplyReflTexture(GLuint texture_id) { reflection_texture_id_ = texture_id; }
 	virtual void ApplyShaderProgram(GLuint shader_program_id) { shader_program_id_ = shader_program_id; }
 	
 	virtual void Draw() = 0;
@@ -40,6 +41,7 @@ protected:
 	GLuint vbos_[3];
 
 	GLuint texture_id_;
+	GLuint reflection_texture_id_;
 	GLuint shader_program_id_;
 };
 

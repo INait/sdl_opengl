@@ -17,6 +17,6 @@
 
   <mts_objects>
     <mts model="m1_back" texture="back" shader="background"/>
-    <mts model="m2_sphere" texture="ball" shader="diffuse"/>
+    <mts model="m2_sphere" texture="ball" texture_refl="back" shader="diffuse"/>
   </mts_objects>
 </resources>
