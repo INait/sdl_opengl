@@ -81,6 +81,9 @@
     <ClCompile Include="..\src\models\background.cpp">
       <Filter>src\models</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\models\table.cpp">
+      <Filter>src\models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rd\tinyxml\tinystr.h">
@@ -128,6 +131,9 @@
     <ClInclude Include="..\src\models\background.hpp">
       <Filter>src\models</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\models\table.hpp">
+      <Filter>src\models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\shaders\simpleShader.frag">
@@ -150,11 +156,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\res\res.xml">
-      <Filter>res</Filter>
-    </Xml>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="..\res\obj\ball_albedo.png">
       <Filter>res\obj</Filter>
     </Image>
@@ -163,5 +164,10 @@
     <Object Include="..\res\obj\sphere.obj">
       <Filter>res\obj</Filter>
     </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\res\res.xml">
+      <Filter>res</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

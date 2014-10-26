@@ -2,6 +2,7 @@
 #include "models/mesh.hpp"
 #include "models/billiard_ball.hpp"
 #include "models/background.hpp"
+#include "models/table.hpp"
 #include "gfx/texture.hpp"
 #include "gfx/shader_program.hpp"
 
@@ -45,8 +46,10 @@ void ResourceManager::LoadXMLResources(const std::string & res_location)
 		MeshPtr mesh_ptr;
 		if (model_path.find("sphere") != std::string::npos)
 			mesh_ptr = std::make_shared< BilliardBall >();
-		else if ( model_path.find("back") != std::string::npos)
+		else if (model_path.find("back") != std::string::npos)
 			mesh_ptr = std::make_shared< Background >();
+		else if (model_path.find("table") != std::string::npos)
+			mesh_ptr = std::make_shared< Table >();
 		else
 			throw std::runtime_error("Model not supported");
 

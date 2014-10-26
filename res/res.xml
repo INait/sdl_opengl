@@ -3,11 +3,13 @@
   <objects path="res/obj/">
     <model name="m2_sphere" file="sphere"/>
     <model name="m1_back" file="background"/>
+    <model name="m3_table" file="table"/>
   </objects>
   
   <textures path="res/textures/">
     <texture name="ball" file="ball_albedo.png"/>
     <texture name="back" file="background.bmp"/>
+    <texture name="table" file="table.jpg"/>
   </textures>
 
   <shaders path="res/shaders/">
@@ -18,5 +20,6 @@
   <mts_objects>
     <mts model="m1_back" texture="back" shader="background"/>
     <mts model="m2_sphere" texture="ball" texture_refl="back" shader="diffuse"/>
+    <mts model="m3_table" texture="table" shader="diffuse"/>
   </mts_objects>
 </resources>

@@ -99,16 +99,22 @@ void SdlEngine::GameLoop()
 							pos.y += 0.1f;
 							break;
 						case SDLK_UP:
-							orient.x += 0.5f;
+							orient.x += 0.05f;
 							break;
 						case SDLK_DOWN:
-							orient.x -= 0.5f;
+							orient.x -= 0.05f;
 							break;
 						case SDLK_LEFT:
 							orient.y -= 0.05f;
 							break;
 						case SDLK_RIGHT:
 							orient.y += 0.05f;
+							break;
+						case SDLK_PAGEUP:
+							orient.z += 0.05f;
+							break;
+						case SDLK_PAGEDOWN:
+							orient.z -= 0.05f;
 							break;
 						case SDLK_u:
 							lightPos.x += 5;

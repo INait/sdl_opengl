@@ -39,17 +39,17 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)\..\..\3rd_party_libs\glm;$(ProjectDir)\..\..\3rd_party_libs\SOIL\src;$(ProjectDir)\..\..\3rd_party_libs\glext\include;$(SolutionDir)\..\src;$(ProjectDir)\..\..\3rd_party_libs\SDL2-2.0.1\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\..\..\..\dev\glm;$(ProjectDir)\..\..\..\dev\SOIL\src;$(ProjectDir)\..\..\..\dev\glext\include;$(SolutionDir)\..\src;$(ProjectDir)\..\..\..\dev\SDL2-2.0.1\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(ProjectDir)\..\..\3rd_party_libs\SOIL\lib;$(ProjectDir)\..\..\3rd_party_libs\glext\lib;$(ProjectDir)\..\..\3rd_party_libs\SDL2-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\..\..\..\dev\SOIL\lib;$(ProjectDir)\..\..\..\dev\glext\lib;$(ProjectDir)\..\..\..\dev\SDL2-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\..\obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)\..\..\3rd_party_libs\glm;$(ProjectDir)\..\..\3rd_party_libs\SOIL\src;$(ProjectDir)\..\..\3rd_party_libs\glext\include;$(SolutionDir)\..\src;$(ProjectDir)\..\..\3rd_party_libs\SDL2-2.0.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>$(ProjectDir)\..\..\3rd_party_libs\SOIL\lib;$(ProjectDir)\..\..\3rd_party_libs\glext\lib;$(ProjectDir)\..\..\3rd_party_libs\SDL2-2.0.1\lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
+    <IncludePath>$(ProjectDir)\..\..\..\dev\glm;$(ProjectDir)\..\..\..\dev\SOIL\src;$(ProjectDir)\..\..\..\dev\glext\include;$(SolutionDir)\..\src;$(ProjectDir)\..\..\..\dev\SDL2-2.0.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(ProjectDir)\..\..\..\dev\SOIL\lib;$(ProjectDir)\..\..\..\dev\glext\lib;$(ProjectDir)\..\..\..\dev\SDL2-2.0.1\lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
     <OutDir>$(SolutionDir)\..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\..\obj\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -95,6 +95,7 @@
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\models\background.cpp" />
     <ClCompile Include="..\src\models\billiard_ball.cpp" />
+    <ClCompile Include="..\src\models\table.cpp" />
     <ClCompile Include="..\src\utils\resource_manager.cpp" />
     <ClCompile Include="..\src\wavefront_loader\wavefront_loader.cpp" />
   </ItemGroup>
@@ -111,6 +112,7 @@
     <ClInclude Include="..\src\models\background.hpp" />
     <ClInclude Include="..\src\models\billiard_ball.hpp" />
     <ClInclude Include="..\src\models\mesh.hpp" />
+    <ClInclude Include="..\src\models\table.hpp" />
     <ClInclude Include="..\src\utils\resource_manager.hpp" />
     <ClInclude Include="..\src\utils\singleton.hpp" />
     <ClInclude Include="..\src\wavefront_loader\wavefront_loader.hpp" />
