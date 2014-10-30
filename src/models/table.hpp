@@ -15,8 +15,6 @@ public:
 	virtual void ApplyShaderProgram(GLuint shader_program_id);
 private:
 
-	void GenerateQuad();
-
 	GLuint uniformMVP;
 };
 

@@ -27,9 +27,6 @@ private:
 	GLuint uniformMaterialSpecular;
 	GLuint uniformMaterialShininess;
 
-	void GenerateSphere(float cx, float cy, float cz, float r, int p);
-	void GenerateBackground();
-
 	float rotation_;
 
 public:

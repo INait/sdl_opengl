@@ -16,8 +16,10 @@
 class Mesh
 {
 public:
-	Mesh(const glm::vec3 & position, const glm::vec3 & orientation) : position_(position), orientation_(orientation) { }
+	Mesh(const glm::vec3 & position, const glm::vec3 & orientation);
 	virtual ~Mesh() {}
+
+	virtual void SetupGlBuffers();
 
 	virtual void SetPosition(const glm::vec3 & pos) { position_ = pos; }
 	virtual void SetOrientation(const glm::vec3 & orient) { orientation_ = orient; }

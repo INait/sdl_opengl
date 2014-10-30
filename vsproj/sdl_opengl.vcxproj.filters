@@ -84,6 +84,9 @@
     <ClCompile Include="..\src\models\table.cpp">
       <Filter>src\models</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\models\mesh.cpp">
+      <Filter>src\models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rd\tinyxml\tinystr.h">
@@ -133,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="..\src\models\table.hpp">
       <Filter>src\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils\geometry_primitives_generator.hpp">
+      <Filter>src\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
